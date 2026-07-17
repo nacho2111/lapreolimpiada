@@ -1,0 +1,9 @@
+{
+  "activado": false,
+  "_ayuda": "Copiá este archivo como 'config.correo.json' y completá los datos. Para Gmail: host smtp.gmail.com, puerto 587, usuario tu correo, y en 'contrasena' una CONTRASEÑA DE APLICACIÓN de Google (NO tu contraseña normal). Ver README, sección 'Envío real de correos'.",
+  "host": "smtp.gmail.com",
+  "puerto": 587,
+  "usuario": "tucorreo@gmail.com",
+  "contrasena": "xxxx xxxx xxxx xxxx",
+  "remitente": "AIRSKY <tucorreo@gmail.com>"
+}

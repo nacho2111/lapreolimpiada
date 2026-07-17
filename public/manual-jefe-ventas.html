@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manual del Jefe de Ventas | AIRSKY</title>
+  <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+  <nav class="barra" id="barra"></nav>
+
+  <main class="contenedor">
+    <div class="tarjeta ayuda">
+      <h1>Manual de uso — Aplicación del Jefe de Ventas</h1>
+      <p class="subtitulo">Guía completa del panel administrativo para el Jefe de Ventas y el personal de ventas autorizado.</p>
+
+      <h2>1. Acceso al sistema</h2>
+      <ol>
+        <li>Desde la página de inicio, iniciá sesión con tu usuario interno.
+            El sistema detecta automáticamente el perfil y abre el <strong>Panel de ventas</strong>.</li>
+        <li>El acceso está restringido: los clientes no pueden entrar al panel,
+            y el personal solo ve las funciones de su perfil.</li>
+      </ol>
+      <div class="nota"><strong>Credenciales del usuario interno de prueba:</strong><br>
+        Usuario: <code>jefeventas</code> — Contraseña: <code>Ventas2026!</code> (rol Jefe de Ventas)</div>
+
+      <h2>2. Administrar productos (pestaña "Productos")</h2>
+      <ul>
+        <li><strong>Cargar producto:</strong> botón <em>+ Cargar producto</em>. Completá código de producto
+            (único, ej. PAQ-004), descripción, tipo, precio unitario, stock y categoría. Guardar.</li>
+        <li><strong>Modificar:</strong> botón <em>Modificar</em> en la fila del producto. Permite cambiar
+            descripción, precio, stock, categoría y estado.</li>
+        <li><strong>Dar de baja:</strong> el producto pasa a estado <em>Inactivo</em> y deja de mostrarse
+            en el catálogo de los clientes (no se borra, para conservar el historial de ventas).
+            Con <em>Reactivar</em> vuelve al catálogo.</li>
+      </ul>
+
+      <h2>3. Gestionar pedidos (pestaña "Pedidos")</h2>
+      <ul>
+        <li>Por defecto se muestran los <strong>pedidos pendientes de entrega</strong>, con los datos
+            del cliente y el detalle completo de cada pedido.</li>
+        <li>El selector permite ver también los entregados, los anulados o todos.</li>
+        <li><strong>Registrar entrega:</strong> marca el pedido como <em>Entregado</em>, lo pasa al
+            historial y envía un correo automático al cliente.</li>
+        <li><strong>Anular pedido:</strong> marca el pedido como <em>Anulado</em>, repone el stock de
+            los productos y avisa al cliente por correo.</li>
+      </ul>
+
+      <h2>4. Estado de cuenta (pestaña "Estado de cuenta")</h2>
+      <ul>
+        <li><strong>Facturas por fecha:</strong> todas las ventas ordenadas cronológicamente, con número
+            de venta, pedido, cliente, total, medio de pago y estados.</li>
+        <li><strong>Resumen por cliente:</strong> las ventas agrupadas y ordenadas por cliente, con la
+            cantidad de facturas y el total facturado a cada uno.</li>
+      </ul>
+
+      <h2>5. Historial (pestaña "Historial")</h2>
+      <p>Muestra los pedidos cerrados: cuando un pedido es entregado o anulado, queda registrado
+         aquí con su fecha de cierre y estado final.</p>
+
+      <h2>6. Correos enviados (pestaña "Correos enviados")</h2>
+      <p>Muestra todos los correos que envía el sistema (confirmaciones de compra al cliente y avisos a los
+         sectores de la empresa). El botón <em>Ver</em> muestra el mensaje completo.</p>
+
+      <h2>7. Configuración (pestaña "Configuración")</h2>
+      <p>Permite cambiar la <strong>dirección de correo del sector</strong> que recibe las notificaciones
+         de cada tipo de producto (paquetes, estadías, pasajes, alquileres, otros).</p>
+
+      <h2>8. Recomendaciones de uso</h2>
+      <ul>
+        <li>Revisá los pedidos pendientes al comenzar cada jornada.</li>
+        <li>Registrá la entrega inmediatamente después de concretarla, para mantener el estado de cuenta al día.</li>
+        <li>Mantené actualizado el stock: los productos sin stock no pueden ser comprados por los clientes.</li>
+        <li>Cerrá sesión al terminar de usar el panel.</li>
+      </ul>
+    </div>
+  </main>
+
+  <footer class="pie">AIRSKY · Proyecto ONETP Programación</footer>
+
+  <script src="js/comun.js"></script>
+  <script>dibujarBarra('manual');</script>
+</body>
+</html>

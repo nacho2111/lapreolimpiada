@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel de ventas | AIRSKY</title>
+  <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+  <nav class="barra" id="barra"></nav>
+
+  <main class="contenedor">
+    <div class="tarjeta">
+      <h1>Panel del Jefe de Ventas</h1>
+      <p class="subtitulo">Administración del catálogo, gestión de pedidos, estado de cuenta y correos del sistema.</p>
+
+      <div class="pestanas">
+        <button class="pestana activa" data-panel="panelProductos">Productos</button>
+        <button class="pestana" data-panel="panelPedidos">Pedidos</button>
+        <button class="pestana" data-panel="panelCuenta">Estado de cuenta</button>
+        <button class="pestana" data-panel="panelHistorial">Historial</button>
+        <button class="pestana" data-panel="panelEmails">Correos enviados</button>
+        <button class="pestana" data-panel="panelConfig">Configuración</button>
+      </div>
+
+      <div class="mensaje" id="mensaje"></div>
+
+      <!-- CU-08: Administrar Productos -->
+      <section class="panel-pestana visible" id="panelProductos">
+        <div class="acciones" style="justify-content: space-between;">
+          <h2>Catálogo de productos</h2>
+          <button class="boton exito" id="btnNuevoProducto">+ Cargar producto</button>
+        </div>
+        <div class="tabla-envoltura mt">
+          <table>
+            <thead>
+              <tr><th>Código</th><th>Descripción</th><th>Tipo</th><th class="derecha">Precio unit.</th>
+                  <th class="derecha">Stock</th><th>Estado</th><th>Acciones</th></tr>
+            </thead>
+            <tbody id="cuerpoProductosAdmin"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- CU-09 / CU-10: Pedidos pendientes, entrega y anulación -->
+      <section class="panel-pestana" id="panelPedidos">
+        <div class="acciones" style="align-items: center;">
+          <h2 style="margin:0;">Pedidos</h2>
+          <select id="filtroEstadoPedidos" style="max-width:220px;">
+            <option value="Pendiente" selected>Pendientes de entrega</option>
+            <option value="Entregado">Entregados</option>
+            <option value="Anulado">Anulados</option>
+            <option value="Todos">Todos</option>
+          </select>
+        </div>
+        <div id="listaPedidosAdmin" class="mt">Cargando...</div>
+      </section>
+
+      <!-- CU-11: Estado de cuenta -->
+      <section class="panel-pestana" id="panelCuenta">
+        <h2>Estado de cuenta</h2>
+        <div class="pestanas">
+          <button class="pestana activa" data-vista="vistaFecha">Facturas por fecha</button>
+          <button class="pestana" data-vista="vistaCliente">Resumen por cliente</button>
+        </div>
+        <div id="vistaFecha">
+          <div class="tabla-envoltura">
+            <table>
+              <thead>
+                <tr><th>Fecha</th><th>Factura / Venta N°</th><th>Pedido N°</th><th>Cliente</th>
+                    <th class="derecha">Total</th><th>Medio de pago</th><th>Estado pago</th><th>Estado pedido</th></tr>
+              </thead>
+              <tbody id="cuerpoCuentaFecha"></tbody>
+            </table>
+          </div>
+        </div>
+        <div id="vistaCliente" class="oculto">
+          <div id="cuerpoCuentaCliente"></div>
+        </div>
+      </section>
+
+      <!-- Historial de pedidos entregados/anulados -->
+      <section class="panel-pestana" id="panelHistorial">
+        <h2>Historial de pedidos cerrados</h2>
+        <div class="tabla-envoltura mt">
+          <table>
+            <thead>
+              <tr><th>N°</th><th>Pedido N°</th><th>Cliente</th><th>Fecha del pedido</th>
+                  <th>Fecha de cierre</th><th>Estado final</th><th class="derecha">Total</th></tr>
+            </thead>
+            <tbody id="cuerpoHistorial"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Tabla EMAIL de la aplicación -->
+      <section class="panel-pestana" id="panelEmails">
+        <h2>Correos registrados por el sistema</h2>
+        <div class="tabla-envoltura mt">
+          <table>
+            <thead>
+              <tr><th>N°</th><th>Fecha de envío</th><th>Destinatario</th><th>Tipo</th><th>Asunto</th><th></th></tr>
+            </thead>
+            <tbody id="cuerpoEmails"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Configuración: emails de sector por categoría -->
+      <section class="panel-pestana" id="panelConfig">
+        <h2>Correos de los sectores de la empresa</h2>
+        <div class="tabla-envoltura mt">
+          <table>
+            <thead><tr><th>Categoría</th><th>Tipo</th><th>Email del sector</th><th></th></tr></thead>
+            <tbody id="cuerpoCategorias"></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- Modal alta/edición de producto -->
+  <div class="fondo-modal" id="modalProducto">
+    <div class="modal">
+      <h2 id="tituloModalProducto">Cargar producto</h2>
+      <form class="formulario mt" id="formProducto">
+        <div class="fila-doble">
+          <div>
+            <label for="prodCodigo">Código de producto *</label>
+            <input id="prodCodigo" type="text" required placeholder="Ej: PAQ-004">
+          </div>
+          <div>
+            <label for="prodTipo">Tipo</label>
+            <select id="prodTipo">
+              <option>Paquete</option><option>Estadía</option><option>Pasaje</option>
+              <option>Alquiler</option><option>Otro</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label for="prodDescripcion">Descripción *</label>
+          <input id="prodDescripcion" type="text" required>
+        </div>
+        <div class="fila-doble">
+          <div>
+            <label for="prodPrecio">Precio unitario *</label>
+            <input id="prodPrecio" type="number" min="0.01" step="0.01" required>
+          </div>
+          <div>
+            <label for="prodStock">Stock</label>
+            <input id="prodStock" type="number" min="0" step="1" value="0">
+          </div>
+        </div>
+        <div class="fila-doble">
+          <div>
+            <label for="prodCategoria">Categoría</label>
+            <select id="prodCategoria"></select>
+          </div>
+          <div>
+            <label for="prodEstado">Estado</label>
+            <select id="prodEstado"><option>Activo</option><option>Inactivo</option></select>
+          </div>
+        </div>
+        <div class="acciones">
+          <button class="boton exito" type="submit">Guardar</button>
+          <button class="boton secundario" type="button" id="btnCerrarProducto">Cerrar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal para ver un correo completo -->
+  <div class="fondo-modal" id="modalEmail">
+    <div class="modal">
+      <h2 id="asuntoEmail"></h2>
+      <p class="texto-chico" id="datosEmail"></p>
+      <pre id="mensajeEmail" style="white-space:pre-wrap; background:var(--gris-fondo); padding:14px; border-radius:8px; margin-top:12px; font-family:inherit;"></pre>
+      <div class="acciones">
+        <button class="boton secundario" id="btnCerrarEmail">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="pie">AIRSKY · Proyecto ONETP Programación</footer>
+
+  <script src="js/comun.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>

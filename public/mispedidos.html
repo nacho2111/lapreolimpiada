@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mis pedidos | AIRSKY</title>
+  <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+  <nav class="barra" id="barra"></nav>
+
+  <main class="contenedor">
+    <div class="tarjeta">
+      <h1>Mis pedidos</h1>
+      <p class="subtitulo">Consultá tus pedidos. Los que están pendientes de entrega se pueden modificar o cancelar.</p>
+      <div class="mensaje" id="mensaje"></div>
+      <div id="listaPedidos">Cargando pedidos...</div>
+    </div>
+  </main>
+
+  <!-- Modal para modificar un pedido pendiente (CU-07.1) -->
+  <div class="fondo-modal" id="modalEditar">
+    <div class="modal">
+      <h2 id="tituloEditar">Modificar pedido</h2>
+      <p class="texto-chico">Cambiá las cantidades o quitá productos. Al guardar se recalcula el total.</p>
+      <div class="tabla-envoltura mt">
+        <table>
+          <thead>
+            <tr><th>Código</th><th>Descripción</th><th>Cantidad</th><th></th></tr>
+          </thead>
+          <tbody id="cuerpoEditar"></tbody>
+        </table>
+      </div>
+      <div class="acciones">
+        <button class="boton exito" id="btnGuardarEdicion">Guardar cambios</button>
+        <button class="boton secundario" id="btnCerrarEdicion">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="pie">AIRSKY · Proyecto ONETP Programación</footer>
+
+  <script src="js/comun.js"></script>
+  <script src="js/mispedidos.js"></script>
+</body>
+</html>

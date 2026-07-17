@@ -1,0 +1,41 @@
+[
+  {
+    "id_cliente": 1,
+    "nombre": "Juan",
+    "apellido": "Pérez",
+    "dni": "35123456",
+    "telefono": "011-4555-1234",
+    "email": "juan.perez@gmail.com",
+    "direccion": "Av. Rivadavia 1250, CABA",
+    "usuario": "juanperez",
+    "contrasena": "455747146ac2411b7c83c9b6b4c653a8:e21074356bb5549f9f78184df73e40977150c75730591db5dc5358e93b5b631ac7f49f645aa6a59bb45d25fe96f1e3a564d827952c9e754cadc0b6229d8f128e",
+    "fecha_registro": "2026-07-17 00:06:46",
+    "estado": "Activo"
+  },
+  {
+    "nombre": "ignacio",
+    "apellido": "marcote",
+    "dni": "48042148",
+    "telefono": "5491159147292",
+    "email": "ignacio.marcotee@gmail.com",
+    "direccion": "gualeguay123",
+    "usuario": "nacho211",
+    "contrasena": "9a5c8494392acbe8dc8484666dd7cd5e:3cb795f74bbd10d261bbe871fab2eeb6684c049baa559a9ce03433de365c435006e44cb4d11d6e084a00a4ecb2ec90d69713a5c9b3e3af7a7e6891663d44b515",
+    "fecha_registro": "2026-07-17 00:09:20",
+    "estado": "Activo",
+    "id_cliente": 2
+  },
+  {
+    "nombre": "ignacio",
+    "apellido": "villalba",
+    "dni": "9857987987",
+    "telefono": "549115454545",
+    "email": "nacho.marcote2111@gmail.com",
+    "direccion": "marruecos",
+    "usuario": "idone",
+    "contrasena": "59a2872425a9c660a9b5cefe49ded501:3e7de8ad3de21f6b68ba2d755e9d7814f6bc800e6a3c602e620500f6f749defe0fc91f5b10ca68ca7479b5b55f8147cb3889cea99ddec9cf2b2b4ac745186bf8",
+    "fecha_registro": "2026-07-17 01:35:36",
+    "estado": "Activo",
+    "id_cliente": 3
+  }
+]

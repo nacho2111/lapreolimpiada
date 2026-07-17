@@ -1,0 +1,22 @@
+[
+  {
+    "id_usuario": 1,
+    "nombre": "Marcela",
+    "apellido": "Domínguez",
+    "email": "jefe.ventas@airsky.com.ar",
+    "usuario": "jefeventas",
+    "contrasena": "393c824edc0d736e19bf898746afd4de:4223cc25cf8116e187ec29f5261be71b1a284dc8e53cdbe4c89079202a2fe7b75463357a56dc7f2978ff3714a7a06184c87111548604ca95356dadbd91331c9b",
+    "rol": "Jefe de Ventas",
+    "estado": "Activo"
+  },
+  {
+    "id_usuario": 2,
+    "nombre": "Carlos",
+    "apellido": "Ríos",
+    "email": "carlos.rios@airsky.com.ar",
+    "usuario": "cventas",
+    "contrasena": "2531b2ba49c250eb93de471d32ac40e4:0475342574d260fa7eddf2840ffb10527903c2a053a0f2adbacbc82cb802cb8bdb70c18108344b373d535fcc934d8f1243e587d16abfa6d3989805d4ff86e6e8",
+    "rol": "Personal de Ventas",
+    "estado": "Activo"
+  }
+]

@@ -1,0 +1,8 @@
+{
+  "activado": true,
+  "host": "smtp.gmail.com",
+  "puerto": 587,
+  "usuario": "viajesairsky@gmail.com",
+  "contrasena": "ewig yqep azun xvpq",
+  "remitente": "AIRSKY <viajesairsky@gmail.com>"
+}

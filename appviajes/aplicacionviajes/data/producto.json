@@ -1,0 +1,112 @@
+[
+  {
+    "id_producto": 1,
+    "codigo_producto": "PAQ-001",
+    "descripcion": "Paquete Bariloche 7 noches - hotel 4 estrellas, aéreo y traslados incluidos",
+    "tipo_producto": "Paquete",
+    "precio": 850000,
+    "stock": 16,
+    "estado": "Activo",
+    "id_categoria": 1
+  },
+  {
+    "id_producto": 2,
+    "codigo_producto": "PAQ-002",
+    "descripcion": "Paquete Cataratas del Iguazú 5 noches - media pensión y excursiones",
+    "tipo_producto": "Paquete",
+    "precio": 620000,
+    "stock": 15,
+    "estado": "Activo",
+    "id_categoria": 1
+  },
+  {
+    "id_producto": 3,
+    "codigo_producto": "PAQ-003",
+    "descripcion": "Paquete Río de Janeiro 7 noches - all inclusive con aéreo",
+    "tipo_producto": "Paquete",
+    "precio": 1450000,
+    "stock": 10,
+    "estado": "Activo",
+    "id_categoria": 1
+  },
+  {
+    "id_producto": 4,
+    "codigo_producto": "EST-001",
+    "descripcion": "Estadía Hotel 4 estrellas en Mendoza - 3 noches con desayuno",
+    "tipo_producto": "Estadía",
+    "precio": 380000,
+    "stock": 25,
+    "estado": "Activo",
+    "id_categoria": 2
+  },
+  {
+    "id_producto": 5,
+    "codigo_producto": "EST-002",
+    "descripcion": "Estadía en cabaña Villa La Angostura - 5 noches para 4 personas",
+    "tipo_producto": "Estadía",
+    "precio": 540000,
+    "stock": 8,
+    "estado": "Activo",
+    "id_categoria": 2
+  },
+  {
+    "id_producto": 6,
+    "codigo_producto": "PAS-001",
+    "descripcion": "Pasaje aéreo Buenos Aires - Bariloche ida y vuelta",
+    "tipo_producto": "Pasaje",
+    "precio": 210000,
+    "stock": 50,
+    "estado": "Activo",
+    "id_categoria": 3
+  },
+  {
+    "id_producto": 7,
+    "codigo_producto": "PAS-002",
+    "descripcion": "Pasaje aéreo Buenos Aires - Madrid ida y vuelta",
+    "tipo_producto": "Pasaje",
+    "precio": 1980000,
+    "stock": 30,
+    "estado": "Activo",
+    "id_categoria": 3
+  },
+  {
+    "id_producto": 8,
+    "codigo_producto": "ALQ-001",
+    "descripcion": "Alquiler de auto compacto por 7 días - kilometraje libre",
+    "tipo_producto": "Alquiler",
+    "precio": 175000,
+    "stock": 12,
+    "estado": "Activo",
+    "id_categoria": 4
+  },
+  {
+    "id_producto": 9,
+    "codigo_producto": "ALQ-002",
+    "descripcion": "Alquiler de SUV por 7 días - kilometraje libre y seguro total",
+    "tipo_producto": "Alquiler",
+    "precio": 260000,
+    "stock": 6,
+    "estado": "Activo",
+    "id_categoria": 4
+  },
+  {
+    "id_producto": 10,
+    "codigo_producto": "OTR-001",
+    "descripcion": "Seguro de viaje internacional - cobertura 15 días",
+    "tipo_producto": "Otro",
+    "precio": 45000,
+    "stock": 100,
+    "estado": "Activo",
+    "id_categoria": 5
+  },
+  {
+    "id_producto": 11,
+    "codigo_producto": "OTR-002",
+    "descripcion": "Excursión Glaciar Perito Moreno con guía - día completo",
+    "tipo_producto": "Otro",
+    "precio": 95000,
+    "stock": 40,
+    "estado": "Activo",
+    "id_categoria": 5
+  }
+]

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ingreso | AIRSKY</title>
+  <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+  <nav class="barra" id="barra"></nav>
+
+  <main class="contenedor">
+    <section class="heroe">
+      <div class="marca-hero">
+        <svg viewBox="0 0 24 24" fill="#7fbdec" xmlns="http://www.w3.org/2000/svg">
+          <path d="M2.4 19.6 21 12 2.4 4.4v5.9L15.2 12 2.4 13.7z"/></svg>
+        <span>AIR<b>SKY</b></span>
+      </div>
+      <h1>Volá más lejos con AIRSKY</h1>
+      <p>Estadías, pasajes aéreos, alquiler de autos y paquetes con todo incluido.
+         Registrate, armá tu carrito y despegá desde tu casa.</p>
+    </section>
+
+    <div class="tarjeta" style="max-width: 560px; margin: 0 auto;">
+      <div class="pestanas">
+        <button class="pestana activa" data-panel="panelLogin">Iniciar sesión</button>
+        <button class="pestana" data-panel="panelRegistro">Registrarse</button>
+      </div>
+
+      <!-- CU-02: Iniciar Sesión -->
+      <div class="panel-pestana visible" id="panelLogin">
+        <form class="formulario" id="formLogin">
+          <div>
+            <label for="loginUsuario">Usuario o correo electrónico</label>
+            <input id="loginUsuario" type="text" autocomplete="username" required>
+          </div>
+          <div>
+            <label for="loginContrasena">Contraseña</label>
+            <input id="loginContrasena" type="password" autocomplete="current-password" required>
+          </div>
+          <button class="boton" type="submit">Ingresar</button>
+        </form>
+      </div>
+
+      <!-- CU-01: Registrar Cliente -->
+      <div class="panel-pestana" id="panelRegistro">
+        <form class="formulario" id="formRegistro">
+          <div class="fila-doble">
+            <div>
+              <label for="regNombre">Nombre *</label>
+              <input id="regNombre" type="text" required>
+            </div>
+            <div>
+              <label for="regApellido">Apellido *</label>
+              <input id="regApellido" type="text" required>
+            </div>
+          </div>
+          <div class="fila-doble">
+            <div>
+              <label for="regDni">DNI *</label>
+              <input id="regDni" type="text" required>
+            </div>
+            <div>
+              <label for="regTelefono">Teléfono</label>
+              <input id="regTelefono" type="text">
+            </div>
+          </div>
+          <div>
+            <label for="regEmail">Correo electrónico *</label>
+            <input id="regEmail" type="email" required>
+          </div>
+          <div>
+            <label for="regDireccion">Domicilio</label>
+            <input id="regDireccion" type="text">
+          </div>
+          <div class="fila-doble">
+            <div>
+              <label for="regUsuario">Usuario *</label>
+              <input id="regUsuario" type="text" required>
+            </div>
+            <div>
+              <label for="regContrasena">Contraseña * (mín. 6)</label>
+              <input id="regContrasena" type="password" minlength="6" autocomplete="new-password" required>
+            </div>
+          </div>
+          <button class="boton exito" type="submit">Crear mi cuenta</button>
+        </form>
+      </div>
+
+      <div class="mensaje" id="mensaje"></div>
+    </div>
+  </main>
+
+  <footer class="pie">AIRSKY · Proyecto ONETP Programación · Instancia Institucional</footer>
+
+  <script src="js/comun.js"></script>
+  <script src="js/index.js"></script>
+</body>
+</html>

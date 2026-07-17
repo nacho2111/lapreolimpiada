@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carrito compras | AIRSKY</title>
+  <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+  <nav class="barra" id="barra"></nav>
+
+  <main class="contenedor">
+    <div class="tarjeta">
+      <h1>Carrito de compras</h1>
+      <p class="subtitulo">Revisá los productos seleccionados. Podés modificar cantidades o quitarlos antes de confirmar la compra.</p>
+
+      <div class="mensaje" id="mensaje"></div>
+
+      <div class="tabla-envoltura">
+        <table>
+          <thead>
+            <tr>
+              <th>Código</th>
+              <th>Descripción</th>
+              <th class="derecha">Precio unitario</th>
+              <th>Cantidad</th>
+              <th class="derecha">Subtotal</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="cuerpoCarrito"></tbody>
+        </table>
+      </div>
+
+      <div class="acciones" style="justify-content: space-between; align-items: center;">
+        <span class="total-grande" id="totalCarrito">Total: $ 0,00</span>
+        <span>
+          <a class="boton secundario" href="catalogo.html">Seguir comprando</a>
+          <button class="boton naranja" id="btnConfirmar">Confirmar compra y pagar</button>
+        </span>
+      </div>
+    </div>
+  </main>
+
+  <!-- Pasarela de pago de terceros (SIMULADA - equivale a Mercado Pago) -->
+  <div class="fondo-modal" id="modalPago">
+    <div class="modal">
+      <h2>💳 AIRSKY Pay · Pasarela de pago segura</h2>
+      <div class="tarjeta-visual">
+        <div class="chip-tarjeta"></div>
+        <div class="numero">•••• •••• •••• 3216</div>
+        <div class="marca-tarjeta">AIRSKY</div>
+      </div>
+      <div class="formulario mt">
+        <div>
+          <label for="medioPago">Medio de pago</label>
+          <select id="medioPago">
+            <option value="Tarjeta">Tarjeta de crédito / débito</option>
+            <option value="Transferencia">Transferencia bancaria</option>
+            <option value="Otro">Otro medio</option>
+          </select>
+        </div>
+        <p>Importe a abonar: <strong class="total-grande" id="totalPago"></strong></p>
+        <div class="acciones">
+          <button class="boton exito" id="btnPagar">Pagar ahora</button>
+          <button class="boton secundario" id="btnCancelarPago">Cancelar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="pie">AIRSKY · Proyecto ONETP Programación</footer>
+
+  <script src="js/comun.js"></script>
+  <script src="js/carrito.js"></script>
+</body>
+</html>

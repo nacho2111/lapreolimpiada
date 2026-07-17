@@ -1,0 +1,20 @@
+{
+  "name": "aplicacionviajes",
+  "version": "1.0.0",
+  "description": "Portal de venta de paquetes turísticos con carrito de compras - ONETP Programación (Instancia Institucional)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [
+    "turismo",
+    "carrito",
+    "onetp",
+    "programacion"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.19.2",
+    "nodemailer": "^9.0.3"
+  }
+}

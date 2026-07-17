@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Productos | AIRSKY</title>
+  <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+  <nav class="barra" id="barra"></nav>
+
+  <main class="contenedor">
+    <div class="tarjeta">
+      <h1>Catálogo de productos turísticos</h1>
+      <p class="subtitulo">Consultá la lista de productos disponibles y agregalos a tu carrito de compras.</p>
+
+      <div class="fila-doble">
+        <div>
+          <label for="filtroTexto">Buscar por código o descripción</label>
+          <input id="filtroTexto" type="text" placeholder="Ej: Bariloche, PAQ-001...">
+        </div>
+        <div>
+          <label for="filtroTipo">Filtrar por tipo</label>
+          <select id="filtroTipo">
+            <option value="">Todos</option>
+            <option>Paquete</option>
+            <option>Estadía</option>
+            <option>Pasaje</option>
+            <option>Alquiler</option>
+            <option>Otro</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="mensaje" id="mensaje"></div>
+
+      <div class="tabla-envoltura mt">
+        <table>
+          <thead>
+            <tr>
+              <th>Código</th>
+              <th>Descripción</th>
+              <th>Tipo</th>
+              <th class="derecha">Precio unitario</th>
+              <th class="derecha">Stock</th>
+              <th>Cantidad</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="cuerpoProductos">
+            <tr><td colspan="7" class="centrado">Cargando productos...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <footer class="pie">AIRSKY · Proyecto ONETP Programación</footer>
+
+  <script src="js/comun.js"></script>
+  <script src="js/catalogo.js"></script>
+</body>
+</html>

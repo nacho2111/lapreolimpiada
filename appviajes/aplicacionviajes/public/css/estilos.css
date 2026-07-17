@@ -1,0 +1,346 @@
+/* ============================================================
+   estilos.css - Identidad visual AIRSKY
+   Portal de venta de paquetes turísticos (carrito de compras)
+   Paleta: celeste cielo + azul profundo + acento dorado.
+   ============================================================ */
+
+:root {
+  --sky: #4a9fe0;          /* celeste principal (avión del logo) */
+  --sky-claro: #7fbdec;
+  --sky-suave: #e9f4fd;
+  --navy: #0a2540;         /* azul profundo (barra, títulos) */
+  --navy-2: #103a63;
+  --oro: #d9a94e;          /* acento dorado (tarjeta AIRSKY) */
+  --oro-claro: #f0d69a;
+  --verde: #2e9e5b;
+  --rojo: #d64545;
+  --gris-fondo: #f3f8fd;
+  --gris-borde: #d8e6f2;
+  --texto: #1c2b3a;
+  --blanco: #ffffff;
+  --sombra: 0 4px 18px rgba(10, 37, 64, 0.10);
+  --sombra-fuerte: 0 10px 30px rgba(10, 37, 64, 0.18);
+  --radio: 14px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: var(--gris-fondo);
+  color: var(--texto);
+  min-height: 100vh;
+}
+
+/* ───────────── Barra de navegación ───────────── */
+.barra {
+  background: linear-gradient(100deg, var(--navy) 0%, var(--navy-2) 100%);
+  color: var(--blanco);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 26px;
+  flex-wrap: wrap;
+  box-shadow: 0 2px 14px rgba(10, 37, 64, 0.25);
+  position: sticky;
+  top: 0;
+  z-index: 40;
+}
+
+/* Logo AIRSKY: avión SVG + palabra */
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  margin-right: auto;
+  text-decoration: none;
+  color: var(--blanco);
+}
+
+.logo svg { width: 34px; height: 34px; display: block; }
+
+.logo .marca {
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: var(--blanco);
+}
+.logo .marca b { color: var(--sky-claro); font-weight: 800; }
+
+.barra a {
+  color: #cfe3f7;
+  text-decoration: none;
+  font-size: 0.95rem;
+  padding: 7px 12px;
+  border-radius: 8px;
+  transition: background 0.15s, color 0.15s;
+}
+
+.barra a:hover, .barra a.activo { background: rgba(255, 255, 255, 0.14); color: var(--blanco); }
+
+.barra .contador-carrito {
+  background: var(--oro);
+  color: var(--navy);
+  border-radius: 999px;
+  padding: 1px 8px;
+  font-size: 0.8rem;
+  font-weight: 800;
+  margin-left: 4px;
+}
+
+.barra .usuario { font-size: 0.9rem; color: #9fc3e8; }
+
+/* ───────────── Contenedores ───────────── */
+.contenedor {
+  max-width: 1120px;
+  margin: 28px auto;
+  padding: 0 18px;
+}
+
+.tarjeta {
+  background: var(--blanco);
+  border-radius: var(--radio);
+  box-shadow: var(--sombra);
+  padding: 26px;
+  margin-bottom: 22px;
+  border: 1px solid #eef4fa;
+}
+
+h1 { font-size: 1.6rem; color: var(--navy); margin-bottom: 6px; }
+h2 { font-size: 1.18rem; color: var(--navy); margin: 14px 0 10px; }
+.subtitulo { color: #5b7186; margin-bottom: 18px; font-size: 0.97rem; }
+
+/* ───────────── Portada / héroe ───────────── */
+.heroe {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(120deg, var(--navy) 0%, var(--navy-2) 45%, var(--sky) 130%);
+  color: var(--blanco);
+  border-radius: 18px;
+  padding: 48px 38px;
+  margin-bottom: 24px;
+  box-shadow: var(--sombra-fuerte);
+}
+
+/* Nubes / estela decorativa del héroe */
+.heroe::after {
+  content: "";
+  position: absolute;
+  right: -40px;
+  top: -40px;
+  width: 260px;
+  height: 260px;
+  background: radial-gradient(circle at center, rgba(127, 189, 236, 0.35), transparent 70%);
+  border-radius: 50%;
+}
+
+.heroe .marca-hero {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+.heroe .marca-hero svg { width: 52px; height: 52px; }
+.heroe .marca-hero span { font-size: 2rem; font-weight: 800; letter-spacing: 3px; }
+.heroe .marca-hero span b { color: var(--sky-claro); }
+
+.heroe h1 { color: var(--blanco); font-size: 1.9rem; position: relative; }
+.heroe p { color: #d8ebfb; margin-top: 8px; max-width: 640px; position: relative; }
+
+/* ───────────── Formularios ───────────── */
+.formulario { display: grid; gap: 14px; }
+.fila-doble { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+label { font-size: 0.88rem; font-weight: 600; color: #37506a; display: block; margin-bottom: 4px; }
+
+input, select, textarea {
+  width: 100%;
+  padding: 11px 13px;
+  border: 1px solid var(--gris-borde);
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  background: var(--blanco);
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--sky);
+  box-shadow: 0 0 0 3px rgba(74, 159, 224, 0.2);
+}
+
+/* ───────────── Botones ───────────── */
+.boton {
+  display: inline-block;
+  border: none;
+  border-radius: 10px;
+  padding: 11px 22px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  background: linear-gradient(120deg, var(--sky) 0%, #3d8fd4 100%);
+  color: var(--blanco);
+  text-decoration: none;
+  transition: transform 0.08s, filter 0.15s, box-shadow 0.15s;
+  box-shadow: 0 4px 12px rgba(74, 159, 224, 0.28);
+}
+
+.boton:hover { filter: brightness(1.06); box-shadow: 0 6px 16px rgba(74, 159, 224, 0.38); }
+.boton:active { transform: translateY(1px); }
+.boton.secundario { background: #e8f1fa; color: var(--navy); box-shadow: none; }
+.boton.exito { background: linear-gradient(120deg, #35b06a 0%, #268a51 100%); box-shadow: 0 4px 12px rgba(46, 158, 91, 0.3); }
+.boton.peligro { background: linear-gradient(120deg, #e05656 0%, #c23a3a 100%); box-shadow: 0 4px 12px rgba(214, 69, 69, 0.3); }
+.boton.naranja { background: linear-gradient(120deg, var(--oro) 0%, #c6923a 100%); color: var(--navy); box-shadow: 0 4px 12px rgba(217, 169, 78, 0.35); }
+.boton.chico { padding: 6px 13px; font-size: 0.85rem; box-shadow: none; }
+.boton:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* ───────────── Tablas ───────────── */
+.tabla-envoltura { overflow-x: auto; border-radius: 10px; }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+  background: var(--blanco);
+}
+
+th {
+  background: var(--sky-suave);
+  color: var(--navy);
+  text-align: left;
+  padding: 11px 13px;
+  border-bottom: 2px solid var(--gris-borde);
+  white-space: nowrap;
+}
+
+td { padding: 11px 13px; border-bottom: 1px solid #eef4fa; vertical-align: top; }
+tr:hover td { background: #f6fbff; }
+.derecha { text-align: right; }
+
+/* ───────────── Etiquetas de estado ───────────── */
+.chip {
+  display: inline-block;
+  padding: 3px 11px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.chip.pendiente { background: #fdf0d8; color: #a9781f; }
+.chip.entregado { background: #e2f5ea; color: var(--verde); }
+.chip.anulado { background: #fbe4e4; color: var(--rojo); }
+.chip.activo { background: #e2f5ea; color: var(--verde); }
+.chip.inactivo { background: #eaeff4; color: #64788c; }
+.chip.aprobado { background: #e2f5ea; color: var(--verde); }
+
+/* ───────────── Mensajes ───────────── */
+.mensaje {
+  padding: 12px 16px;
+  border-radius: 10px;
+  margin: 12px 0;
+  font-size: 0.93rem;
+  display: none;
+}
+
+.mensaje.error { background: #fbe4e4; color: var(--rojo); border: 1px solid #f0c4c4; display: block; }
+.mensaje.exito { background: #e2f5ea; color: var(--verde); border: 1px solid #bfe6cd; display: block; }
+.mensaje.info { background: var(--sky-suave); color: var(--navy); border: 1px solid #bfdcf5; display: block; }
+
+/* ───────────── Pestañas ───────────── */
+.pestanas { display: flex; gap: 6px; border-bottom: 2px solid var(--gris-borde); margin-bottom: 20px; flex-wrap: wrap; }
+
+.pestana {
+  border: none;
+  background: none;
+  padding: 10px 18px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #5b7186;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+}
+
+.pestana.activa { color: var(--sky); border-bottom-color: var(--sky); }
+
+.panel-pestana { display: none; }
+.panel-pestana.visible { display: block; }
+
+/* ───────────── Ventana modal ───────────── */
+.fondo-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 37, 64, 0.55);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  padding: 16px;
+  backdrop-filter: blur(2px);
+}
+
+.fondo-modal.visible { display: flex; }
+
+.modal {
+  background: var(--blanco);
+  border-radius: 18px;
+  padding: 26px;
+  max-width: 640px;
+  width: 100%;
+  max-height: 88vh;
+  overflow-y: auto;
+  box-shadow: var(--sombra-fuerte);
+}
+
+/* Tarjeta dorada de la pasarela de pago */
+.tarjeta-visual {
+  background: linear-gradient(120deg, #e8cd84 0%, var(--oro) 55%, #b8862f 100%);
+  color: #3a2e12;
+  border-radius: 14px;
+  padding: 20px;
+  max-width: 340px;
+  aspect-ratio: 1.6 / 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: var(--sombra-fuerte);
+  margin: 8px 0 4px;
+}
+.tarjeta-visual .chip-tarjeta { width: 42px; height: 30px; border-radius: 6px; background: linear-gradient(135deg, #f4e6b8, #c9a44c); }
+.tarjeta-visual .numero { font-size: 1.1rem; letter-spacing: 3px; font-weight: 700; }
+.tarjeta-visual .marca-tarjeta { font-weight: 800; letter-spacing: 2px; text-align: right; }
+
+/* ───────────── Ayuda / manual ───────────── */
+.ayuda h2 { margin-top: 22px; }
+.ayuda p, .ayuda li { line-height: 1.65; font-size: 0.96rem; }
+.ayuda ol, .ayuda ul { margin: 8px 0 8px 24px; }
+.ayuda .nota {
+  background: var(--sky-suave);
+  border-left: 4px solid var(--sky);
+  padding: 10px 14px;
+  border-radius: 8px;
+  margin: 12px 0;
+}
+.ayuda code { background: #eef4fa; padding: 2px 6px; border-radius: 5px; font-size: 0.9em; }
+
+/* ───────────── Utilidades ───────────── */
+.acciones { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+.total-grande { font-size: 1.35rem; font-weight: 800; color: var(--navy); }
+.texto-chico { font-size: 0.85rem; color: #5b7186; }
+.centrado { text-align: center; }
+.mt { margin-top: 16px; }
+.oculto { display: none; }
+
+.pie {
+  text-align: center;
+  color: #7a91a8;
+  font-size: 0.85rem;
+  padding: 22px 12px 30px;
+}
+
+@media (max-width: 640px) {
+  .fila-doble { grid-template-columns: 1fr; }
+  .heroe { padding: 30px 22px; }
+  .heroe .marca-hero span { font-size: 1.5rem; }
+}

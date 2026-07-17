@@ -1,0 +1,26 @@
+[
+  {
+    "fecha_pago": "2026-07-17 00:15:57",
+    "monto": 850000,
+    "medio_pago": "Tarjeta",
+    "estado": "Aprobado",
+    "id_pedido": 1,
+    "id_pago": 1
+  },
+  {
+    "fecha_pago": "2026-07-17 00:29:28",
+    "monto": 2550000,
+    "medio_pago": "Tarjeta",
+    "estado": "Aprobado",
+    "id_pedido": 2,
+    "id_pago": 2
+  },
+  {
+    "fecha_pago": "2026-07-17 01:35:47",
+    "monto": 850000,
+    "medio_pago": "Tarjeta",
+    "estado": "Aprobado",
+    "id_pedido": 3,
+    "id_pago": 3
+  }
+]

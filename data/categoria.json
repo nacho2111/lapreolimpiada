@@ -1,0 +1,42 @@
+[
+  {
+    "id_categoria": 1,
+    "nombre_categoria": "Paquetes completos",
+    "tipo_categoria": "Paquete",
+    "descripcion": "Paquetes turísticos con todo el servicio incluido",
+    "email_sector": "paquetes@airsky.com.ar",
+    "estado": "Activo"
+  },
+  {
+    "id_categoria": 2,
+    "nombre_categoria": "Estadías",
+    "tipo_categoria": "Estadía",
+    "descripcion": "Estadías en hoteles y cabañas",
+    "email_sector": "estadias@airsky.com.ar",
+    "estado": "Activo"
+  },
+  {
+    "id_categoria": 3,
+    "nombre_categoria": "Pasajes aéreos",
+    "tipo_categoria": "Pasaje",
+    "descripcion": "Pasajes aéreos nacionales e internacionales",
+    "email_sector": "pasajes@airsky.com.ar",
+    "estado": "Activo"
+  },
+  {
+    "id_categoria": 4,
+    "nombre_categoria": "Alquiler de autos",
+    "tipo_categoria": "Alquiler",
+    "descripcion": "Alquiler de vehículos",
+    "email_sector": "alquileres@airsky.com.ar",
+    "estado": "Activo"
+  },
+  {
+    "id_categoria": 5,
+    "nombre_categoria": "Otros servicios",
+    "tipo_categoria": "Otro",
+    "descripcion": "Seguros, excursiones y servicios adicionales",
+    "email_sector": "ventas@airsky.com.ar",
+    "estado": "Activo"
+  }
+]

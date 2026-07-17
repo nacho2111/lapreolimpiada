@@ -1,0 +1,74 @@
+[
+  {
+    "destinatario": "ignacio.marcotee@gmail.com",
+    "asunto": "Confirmación de compra - Pedido N° 1",
+    "mensaje": "Hola ignacio marcote:\n\nTu compra fue registrada con éxito. Pedido N° 1 (2026-07-17 00:15:57).\n\nDetalle:\n - PAQ-001 | Paquete Bariloche 7 noches - hotel 4 estrellas, aéreo y traslados incluidos | Cant: 1 | Subtotal: $850000\n\nTotal abonado: $850000\n\nEl pedido se encuentra PENDIENTE DE ENTREGA. Te avisaremos cuando sea entregado.\n\nGracias por confiar en nosotros.\nAIRSKY",
+    "fecha_envio": "2026-07-17 00:15:57",
+    "tipo": "Confirmación",
+    "id_pedido": 1,
+    "id_email": 1
+  },
+  {
+    "destinatario": "paquetes@airsky.com.ar",
+    "asunto": "Nuevo pedido N° 1 pendiente de entrega",
+    "mensaje": "Se registró el pedido N° 1 del cliente marcote, ignacio (DNI 48042148, ignacio.marcotee@gmail.com).\n\nProductos del sector:\n - PAQ-001 | Paquete Bariloche 7 noches - hotel 4 estrellas, aéreo y traslados incluidos | Cant: 1\n\nTotal del pedido: $850000\nEstado: PENDIENTE DE ENTREGA.",
+    "fecha_envio": "2026-07-17 00:15:57",
+    "tipo": "Pedido",
+    "id_pedido": 1,
+    "id_email": 2
+  },
+  {
+    "destinatario": "ignacio.marcotee@gmail.com",
+    "asunto": "Confirmación de compra - Pedido N° 2",
+    "mensaje": "Hola ignacio marcote:\n\nTu compra fue registrada con éxito. Pedido N° 2 (2026-07-17 00:29:28).\n\nDetalle:\n - PAQ-001 | Paquete Bariloche 7 noches - hotel 4 estrellas, aéreo y traslados incluidos | Cant: 3 | Subtotal: $2550000\n\nTotal abonado: $2550000\n\nEl pedido se encuentra PENDIENTE DE ENTREGA. Te avisaremos cuando sea entregado.\n\nGracias por confiar en nosotros.\nAIRSKY",
+    "fecha_envio": "2026-07-17 00:29:28",
+    "tipo": "Confirmación",
+    "id_pedido": 2,
+    "id_email": 3
+  },
+  {
+    "destinatario": "paquetes@airsky.com.ar",
+    "asunto": "Nuevo pedido N° 2 pendiente de entrega",
+    "mensaje": "Se registró el pedido N° 2 del cliente marcote, ignacio (DNI 48042148, ignacio.marcotee@gmail.com).\n\nProductos del sector:\n - PAQ-001 | Paquete Bariloche 7 noches - hotel 4 estrellas, aéreo y traslados incluidos | Cant: 3\n\nTotal del pedido: $2550000\nEstado: PENDIENTE DE ENTREGA.",
+    "fecha_envio": "2026-07-17 00:29:28",
+    "tipo": "Pedido",
+    "id_pedido": 2,
+    "id_email": 4
+  },
+  {
+    "destinatario": "ignacio.marcotee@gmail.com",
+    "asunto": "Pedido N° 2 entregado",
+    "mensaje": "Hola ignacio:\n\nTu pedido N° 2 fue ENTREGADO el 2026-07-17 00:30:40. ¡Buen viaje!\n\nAIRSKY",
+    "fecha_envio": "2026-07-17 00:30:40",
+    "tipo": "Pedido",
+    "id_pedido": 2,
+    "id_email": 5
+  },
+  {
+    "destinatario": "ignacio.marcotee@gmail.com",
+    "asunto": "Pedido N° 1 anulado",
+    "mensaje": "Hola ignacio:\n\nTu pedido N° 1 fue ANULADO el 2026-07-17 00:31:08. Si abonaste, el reintegro se gestionará por el mismo medio de pago.\n\nAIRSKY",
+    "fecha_envio": "2026-07-17 00:31:08",
+    "tipo": "Pedido",
+    "id_pedido": 1,
+    "id_email": 6
+  },
+  {
+    "destinatario": "nacho.marcote2111@gmail.com",
+    "asunto": "Confirmación de compra - Pedido N° 3",
+    "mensaje": "Hola ignacio villalba:\n\nTu compra fue registrada con éxito. Pedido N° 3 (2026-07-17 01:35:47).\n\nDetalle:\n - PAQ-001 | Paquete Bariloche 7 noches - hotel 4 estrellas, aéreo y traslados incluidos | Cant: 1 | Subtotal: $850000\n\nTotal abonado: $850000\n\nEl pedido se encuentra PENDIENTE DE ENTREGA. Te avisaremos cuando sea entregado.\n\nGracias por confiar en nosotros.\nAIRSKY",
+    "fecha_envio": "2026-07-17 01:35:47",
+    "tipo": "Confirmación",
+    "id_pedido": 3,
+    "id_email": 7
+  },
+  {
+    "destinatario": "paquetes@airsky.com.ar",
+    "asunto": "Nuevo pedido N° 3 pendiente de entrega",
+    "mensaje": "Se registró el pedido N° 3 del cliente villalba, ignacio (DNI 9857987987, nacho.marcote2111@gmail.com).\n\nProductos del sector:\n - PAQ-001 | Paquete Bariloche 7 noches - hotel 4 estrellas, aéreo y traslados incluidos | Cant: 1\n\nTotal del pedido: $850000\nEstado: PENDIENTE DE ENTREGA.",
+    "fecha_envio": "2026-07-17 01:35:47",
+    "tipo": "Pedido",
+    "id_pedido": 3,
+    "id_email": 8
+  }
+]

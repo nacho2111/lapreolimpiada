@@ -1,0 +1,23 @@
+[
+  {
+    "fecha_venta": "2026-07-17 00:15:57",
+    "total": 850000,
+    "id_pago": 1,
+    "id_pedido": 1,
+    "id_venta": 1
+  },
+  {
+    "fecha_venta": "2026-07-17 00:29:28",
+    "total": 2550000,
+    "id_pago": 2,
+    "id_pedido": 2,
+    "id_venta": 2
+  },
+  {
+    "fecha_venta": "2026-07-17 01:35:47",
+    "total": 850000,
+    "id_pago": 3,
+    "id_pedido": 3,
+    "id_venta": 3
+  }
+]

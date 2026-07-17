@@ -1,0 +1,14 @@
+[
+  {
+    "fecha_entrega": "2026-07-17 00:30:40",
+    "estado_final": "Entregado",
+    "id_pedido": 2,
+    "id_historial": 1
+  },
+  {
+    "fecha_entrega": "2026-07-17 00:31:08",
+    "estado_final": "Anulado",
+    "id_pedido": 1,
+    "id_historial": 2
+  }
+]

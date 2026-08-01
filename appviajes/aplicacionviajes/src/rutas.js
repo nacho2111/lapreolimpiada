@@ -1,29 +1,3 @@
-/**
- * rutas.js
- * Definición de todos los endpoints de la API REST.
- *
- * Endpoints de la capa Cliente (portal de compras):
- *   POST /api/auth/registro      Alta de nuevos clientes (CU-01)
- *   POST /api/auth/login         Inicio de sesión de clientes y usuarios internos (CU-02)
- *   POST /api/auth/logout        Cierre de sesión
- *   GET  /api/auth/perfil        Datos de la sesión actual
- *   GET  /api/productos          Lista de productos activos (CU-03)
- *   POST /api/pedidos            Confirmar compra: crea pedido, cobra y envía mails (CU-06)
- *   GET  /api/pedidos            Pedidos del cliente autenticado (CU-07)
- *   PUT  /api/pedidos/:id        Modificar un pedido pendiente (CU-07.1)
- *   DELETE /api/pedidos/:id      Cancelar un pedido pendiente (CU-07.2)
- *
- * Endpoints de la capa Servidor / panel del Jefe de Ventas:
- *   GET/POST/PUT/DELETE /api/admin/productos      Administración del catálogo (CU-08)
- *   GET  /api/admin/pedidos                       Pedidos por estado (CU-09)
- *   POST /api/admin/pedidos/:id/entregar          Registrar entrega (CU-10)
- *   POST /api/admin/pedidos/:id/anular            Anular pedido (1.4.6)
- *   GET  /api/admin/estado-cuenta                 Estado de cuenta por fecha y por cliente (CU-11)
- *   GET  /api/admin/historial                     Tabla histórica de pedidos cerrados
- *   GET  /api/admin/emails                        Correos registrados por el sistema
- *   GET/PUT /api/admin/categorias                 Emails de sector por categoría
- */
-
 'use strict';
 
 const express = require('express');
@@ -31,24 +5,16 @@ const auth = require('./auth');
 const { fechaHoraActual } = require('./util');
 const servicio = require('./servicio-pedidos');
 
-/**
- * Crea el router de la API.
- * @param {object} store - Capa de datos ya inicializada (JSON).
- * @returns {express.Router} Router con todos los endpoints.
- */
 function crearRutas(store) {
   const router = express.Router();
 
-  /** Envuelve un handler async y deriva los errores al manejador central. */
+  // para no escribir el try/catch en cada ruta
   const seguro = (fn) => (req, res) => {
     Promise.resolve(fn(req, res)).catch((error) => {
       res.status(400).json({ error: error.message || 'Error inesperado.' });
     });
   };
 
-  // ────────────────────────── AUTENTICACIÓN ──────────────────────────
-
-  // CU-01: Registrar Cliente (alta mediante contraseña).
   router.post('/auth/registro', seguro(async (req, res) => {
     const { nombre, apellido, dni, telefono, email, direccion, usuario, contrasena } = req.body || {};
 
@@ -85,9 +51,7 @@ function crearRutas(store) {
     res.status(201).json({ mensaje: 'Registro exitoso. Ya puede iniciar sesión.', id_cliente: cliente.id_cliente });
   }));
 
-  // CU-02: Iniciar Sesión (valida clientes y usuarios internos).
-  // Se puede ingresar con el nombre de usuario O con el correo electrónico,
-  // en ambos casos sin distinguir mayúsculas de minúsculas.
+  // se puede entrar con el usuario o con el mail, en mayusculas o minusculas
   router.post('/auth/login', seguro(async (req, res) => {
     const { usuario, contrasena } = req.body || {};
     if (!usuario || !contrasena) {
@@ -122,9 +86,6 @@ function crearRutas(store) {
     res.json(req.sesion);
   });
 
-  // ────────────────────────── PRODUCTOS (clientes) ──────────────────────────
-
-  // CU-03: Consultar Productos (lista sin imágenes, requiere sesión iniciada).
   router.get('/productos', auth.requiereSesion, seguro(async (req, res) => {
     const productos = (await store.all('producto')).filter((p) => p.estado === 'Activo');
     const categorias = await store.all('categoria');
@@ -143,9 +104,6 @@ function crearRutas(store) {
     res.json(lista);
   }));
 
-  // ────────────────────────── PEDIDOS (clientes) ──────────────────────────
-
-  // CU-06: Confirmar Compra (arma pedido, cobra vía pasarela simulada y envía mails).
   router.post('/pedidos', auth.requiereCliente, seguro(async (req, res) => {
     const { items, medio_pago } = req.body || {};
     const { pedido } = await servicio.crearPedido(store, req.sesion.id, items, medio_pago);
@@ -156,7 +114,6 @@ function crearRutas(store) {
     });
   }));
 
-  // CU-07: Consultar Pedidos (cada cliente solo ve los propios).
   router.get('/pedidos', auth.requiereCliente, seguro(async (req, res) => {
     const pedidos = (await store.all('pedido'))
       .filter((p) => p.id_cliente === req.sesion.id)
@@ -166,7 +123,6 @@ function crearRutas(store) {
     res.json(conDetalle);
   }));
 
-  // CU-07.1: Modificar Pedido (solo pendientes y del propio cliente).
   router.put('/pedidos/:id', auth.requiereCliente, seguro(async (req, res) => {
     const pedido = await store.get('pedido', req.params.id);
     if (!pedido || pedido.id_cliente !== req.sesion.id) {
@@ -179,7 +135,6 @@ function crearRutas(store) {
     res.json({ mensaje: `Pedido N° ${pedido.id_pedido} actualizado.`, total: actualizado.total });
   }));
 
-  // CU-07.2: Cancelar Pedido (solo pendientes y del propio cliente).
   router.delete('/pedidos/:id', auth.requiereCliente, seguro(async (req, res) => {
     const pedido = await store.get('pedido', req.params.id);
     if (!pedido || pedido.id_cliente !== req.sesion.id) {
@@ -192,9 +147,6 @@ function crearRutas(store) {
     res.json({ mensaje: `Pedido N° ${pedido.id_pedido} cancelado.` });
   }));
 
-  // ────────────────────────── PANEL DEL JEFE DE VENTAS ──────────────────────────
-
-  // CU-08: Administrar Productos.
   router.get('/admin/productos', auth.requiereInterno, seguro(async (req, res) => {
     const productos = await store.all('producto');
     const categorias = await store.all('categoria');
@@ -253,7 +205,7 @@ function crearRutas(store) {
     res.json({ mensaje: 'Producto actualizado.' });
   }));
 
-  // Baja lógica: el producto pasa a Inactivo (no se pierde el historial de ventas).
+  // no se borra: pasa a Inactivo, sino se romperian los pedidos viejos
   router.delete('/admin/productos/:id', auth.requiereInterno, seguro(async (req, res) => {
     const producto = await store.get('producto', req.params.id);
     if (!producto) return res.status(404).json({ error: 'Producto inexistente.' });
@@ -261,7 +213,6 @@ function crearRutas(store) {
     res.json({ mensaje: `Producto ${producto.codigo_producto} dado de baja del catálogo.` });
   }));
 
-  // CU-09: Consultar Pedidos (por estado; por defecto los pendientes).
   router.get('/admin/pedidos', auth.requiereInterno, seguro(async (req, res) => {
     const estado = req.query.estado || 'Pendiente';
     const clientes = await store.all('cliente');
@@ -278,7 +229,6 @@ function crearRutas(store) {
     res.json(respuesta);
   }));
 
-  // CU-10: Registrar Entrega (el pedido pasa al historial y se avisa por mail).
   router.post('/admin/pedidos/:id/entregar', auth.requiereInterno, seguro(async (req, res) => {
     const pedido = await store.get('pedido', req.params.id);
     if (!pedido) return res.status(404).json({ error: 'Pedido inexistente.' });
@@ -287,7 +237,7 @@ function crearRutas(store) {
     res.json({ mensaje: `Pedido N° ${pedido.id_pedido} marcado como ENTREGADO y registrado en el historial.` });
   }));
 
-  // 1.4.6: Anular un pedido (desde el panel de ventas).
+  // anular devuelve el stock y le avisa al cliente por mail
   router.post('/admin/pedidos/:id/anular', auth.requiereInterno, seguro(async (req, res) => {
     const pedido = await store.get('pedido', req.params.id);
     if (!pedido) return res.status(404).json({ error: 'Pedido inexistente.' });
@@ -296,7 +246,6 @@ function crearRutas(store) {
     res.json({ mensaje: `Pedido N° ${pedido.id_pedido} ANULADO.` });
   }));
 
-  // CU-11: Consultar Estado de Cuenta (facturas por fecha y resumen por cliente).
   router.get('/admin/estado-cuenta', auth.requiereInterno, seguro(async (req, res) => {
     const ventas = await store.all('venta');
     const pagos = await store.all('pago');
@@ -319,10 +268,10 @@ function crearRutas(store) {
       };
     });
 
-    // Estado de cuenta 1: facturas a cobrar ordenadas por fecha.
+    // primer listado: las facturas ordenadas por fecha
     const porFecha = [...facturas].sort((a, b) => String(a.fecha).localeCompare(String(b.fecha)));
 
-    // Estado de cuenta 2: agrupado y ordenado por cliente.
+    // segundo listado: lo mismo pero agrupado por cliente
     const porClienteMapa = new Map();
     for (const f of facturas) {
       if (!porClienteMapa.has(f.cliente)) {
@@ -338,7 +287,7 @@ function crearRutas(store) {
     res.json({ porFecha, porCliente });
   }));
 
-  // Tabla histórica de pedidos entregados/anulados.
+  // pedidos que ya se cerraron, entregados o anulados
   router.get('/admin/historial', auth.requiereInterno, seguro(async (req, res) => {
     const historial = await store.all('historial_pedidos');
     const pedidos = await store.all('pedido');
@@ -361,13 +310,13 @@ function crearRutas(store) {
     res.json(respuesta);
   }));
 
-  // Correos registrados por el sistema (tabla EMAIL de la aplicación).
+  // todos los correos que fue guardando el sistema
   router.get('/admin/emails', auth.requiereInterno, seguro(async (req, res) => {
     const emails = (await store.all('email')).sort((a, b) => b.id_email - a.id_email);
     res.json(emails);
   }));
 
-  // Categorías y emails de sector (configurables sin tocar el código).
+  // el mail de cada sector se cambia desde el panel, sin tocar el codigo
   router.get('/admin/categorias', auth.requiereInterno, seguro(async (req, res) => {
     res.json(await store.all('categoria'));
   }));
@@ -383,7 +332,7 @@ function crearRutas(store) {
     res.json({ mensaje: `Email del sector "${categoria.nombre_categoria}" actualizado.` });
   }));
 
-  // Lista de categorías activas para el formulario de productos.
+  // para el combo de categorias del formulario de productos
   router.get('/categorias', auth.requiereSesion, seguro(async (req, res) => {
     const categorias = (await store.all('categoria')).filter((c) => c.estado === 'Activo');
     res.json(categorias.map(({ id_categoria, nombre_categoria, tipo_categoria }) => ({ id_categoria, nombre_categoria, tipo_categoria })));

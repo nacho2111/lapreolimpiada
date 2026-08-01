@@ -5,7 +5,7 @@
     "descripcion": "Paquete Bariloche 7 noches - hotel 4 estrellas, aéreo y traslados incluidos",
     "tipo_producto": "Paquete",
     "precio": 850000,
-    "stock": 16,
+    "stock": 20,
     "estado": "Activo",
     "id_categoria": 1
   },
@@ -26,6 +26,36 @@
     "tipo_producto": "Paquete",
     "precio": 1450000,
     "stock": 10,
+    "estado": "Activo",
+    "id_categoria": 1
+  },
+  {
+    "id_producto": 12,
+    "codigo_producto": "PAQ-004",
+    "descripcion": "Paquete Miami 14 noches - hotel frente al mar con aéreo",
+    "tipo_producto": "Paquete",
+    "precio": 1900000,
+    "stock": 12,
+    "estado": "Activo",
+    "id_categoria": 1
+  },
+  {
+    "id_producto": 13,
+    "codigo_producto": "PAQ-005",
+    "descripcion": "Paquete Madrid 8 noches - hotel céntrico con aéreo",
+    "tipo_producto": "Paquete",
+    "precio": 1750000,
+    "stock": 12,
+    "estado": "Activo",
+    "id_categoria": 1
+  },
+  {
+    "id_producto": 14,
+    "codigo_producto": "PAQ-006",
+    "descripcion": "Paquete Mendoza 5 noches - hotel, aéreo y tour de bodegas",
+    "tipo_producto": "Paquete",
+    "precio": 700000,
+    "stock": 18,
     "estado": "Activo",
     "id_categoria": 1
   },

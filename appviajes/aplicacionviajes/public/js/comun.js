@@ -1,39 +1,18 @@
-/**
- * comun.js
- * Funciones compartidas por todas las páginas del frontend:
- *  - Comunicación con la API REST (con el token de sesión).
- *  - Manejo de la sesión en localStorage.
- *  - Carrito de compras del lado del cliente (localStorage).
- *  - Barra de navegación y utilidades de formato.
- */
-
 'use strict';
 
+// sesion guardada en el navegador
 const Sesion = {
-  /** Devuelve los datos de sesión guardados o null. */
   obtener() {
     try { return JSON.parse(localStorage.getItem('sesion')); } catch { return null; }
   },
-  /** Guarda los datos de sesión (token incluido). */
   guardar(datos) { localStorage.setItem('sesion', JSON.stringify(datos)); },
-  /** Elimina la sesión local. */
   limpiar() { localStorage.removeItem('sesion'); }
 };
 
-/**
- * Realiza una llamada a la API REST enviando el token de sesión.
- * @param {string} metodo - GET | POST | PUT | DELETE.
- * @param {string} ruta - Ruta de la API (ej: '/api/productos').
- * @param {object} [cuerpo] - Cuerpo JSON opcional.
- * @returns {Promise<object>} Respuesta JSON.
- * @throws {Error} Con el mensaje de error devuelto por el servidor.
- */
+// llamada a la API mandando el token si hay sesion
 async function api(metodo, ruta, cuerpo) {
   const sesion = Sesion.obtener();
-  const opciones = {
-    method: metodo,
-    headers: { 'Content-Type': 'application/json' }
-  };
+  const opciones = { method: metodo, headers: { 'Content-Type': 'application/json' } };
   if (sesion && sesion.token) opciones.headers['X-Auth-Token'] = sesion.token;
   if (cuerpo !== undefined) opciones.body = JSON.stringify(cuerpo);
 
@@ -42,15 +21,52 @@ async function api(metodo, ruta, cuerpo) {
 
   if (respuesta.status === 401) {
     Sesion.limpiar();
-    if (!location.pathname.endsWith('index.html') && location.pathname !== '/') {
-      location.href = 'index.html';
-    }
+    if (!esPaginaPublica()) location.href = 'ingreso.html';
   }
   if (!respuesta.ok) throw new Error(datos.error || 'Error de comunicación con el servidor.');
   return datos;
 }
 
-/** Carrito de compras (se guarda en el navegador hasta confirmar la compra). */
+// paginas que se pueden ver sin estar logueado
+function esPaginaPublica() {
+  const p = location.pathname;
+  return p === '/' || p.endsWith('/') ||
+    p.endsWith('index.html') || p.endsWith('ingreso.html');
+}
+
+// cartelito abajo a la derecha que se va solo
+let avisoTimer = null;
+function avisoFlotante(texto) {
+  let el = document.getElementById('avisoFlotante');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'avisoFlotante';
+    el.className = 'aviso';
+    document.body.appendChild(el);
+  }
+  el.textContent = texto;
+  el.classList.add('visible');
+  clearTimeout(avisoTimer);
+  avisoTimer = setTimeout(() => el.classList.remove('visible'), 3500);
+}
+
+// guarda en el carrito el paquete de una tarjeta de la portada
+function reservarDesdeTarjeta(boton) {
+  Carrito.agregar({
+    id_producto: Number(boton.dataset.id),
+    codigo_producto: boton.dataset.codigo,
+    descripcion: boton.dataset.desc,
+    precio: Number(boton.dataset.precio)
+  }, 1);
+  actualizarContadorCarrito();
+
+  const sesion = Sesion.obtener();
+  avisoFlotante(sesion && sesion.tipo === 'cliente'
+    ? 'Listo, lo agregamos a tu carrito.'
+    : 'Agregado al carrito. Iniciá sesión para terminar la compra.');
+}
+
+// carrito guardado en el navegador hasta confirmar la compra
 const Carrito = {
   obtener() {
     try { return JSON.parse(localStorage.getItem('carrito')) || []; } catch { return []; }
@@ -58,11 +74,6 @@ const Carrito = {
   guardar(items) { localStorage.setItem('carrito', JSON.stringify(items)); },
   vaciar() { localStorage.removeItem('carrito'); },
 
-  /**
-   * Agrega un producto (o suma cantidad si ya estaba).
-   * @param {object} producto - {id_producto, codigo_producto, descripcion, precio}
-   * @param {number} cantidad - Unidades a agregar.
-   */
   agregar(producto, cantidad) {
     const items = Carrito.obtener();
     const existente = items.find((i) => i.id_producto === producto.id_producto);
@@ -80,27 +91,17 @@ const Carrito = {
     Carrito.guardar(items);
   },
 
-  /** Cantidad total de unidades en el carrito. */
   cantidadTotal() {
     return Carrito.obtener().reduce((s, i) => s + i.cantidad, 0);
   }
 };
 
-/**
- * Da formato de moneda argentina a un importe.
- * @param {number} n - Importe.
- * @returns {string} Ej: "$ 850.000,00"
- */
+// formato de plata en pesos
 function moneda(n) {
   return '$ ' + Number(n).toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 
-/**
- * Muestra un mensaje en un elemento .mensaje.
- * @param {string} idElemento - id del elemento contenedor.
- * @param {string} texto - Texto a mostrar.
- * @param {'error'|'exito'|'info'} tipo - Estilo del mensaje.
- */
+// muestra un cartelito en un div .mensaje
 function mostrarMensaje(idElemento, texto, tipo) {
   const el = document.getElementById(idElemento);
   if (!el) return;
@@ -111,10 +112,7 @@ function mostrarMensaje(idElemento, texto, tipo) {
   }
 }
 
-/**
- * Dibuja la barra de navegación según el tipo de usuario logueado.
- * @param {string} activa - Nombre de la página activa (para resaltarla).
- */
+// arma la barra de navegacion segun quien este logueado
 function dibujarBarra(activa) {
   const sesion = Sesion.obtener();
   const barra = document.getElementById('barra');
@@ -123,27 +121,40 @@ function dibujarBarra(activa) {
   let enlaces = '';
   if (sesion && sesion.tipo === 'cliente') {
     enlaces = `
-      <a href="catalogo.html" class="${activa === 'catalogo' ? 'activo' : ''}">Productos</a>
+      <a href="index.html" class="${activa === 'inicio' ? 'activo' : ''}">Inicio</a>
+      <a href="catalogo.html" class="${activa === 'catalogo' ? 'activo' : ''}">Paquetes</a>
       <a href="carrito.html" class="${activa === 'carrito' ? 'activo' : ''}">Carrito
         <span class="contador-carrito" id="contadorCarrito">0</span></a>
       <a href="mispedidos.html" class="${activa === 'mispedidos' ? 'activo' : ''}">Mis pedidos</a>
       <a href="ayuda.html" class="${activa === 'ayuda' ? 'activo' : ''}">Ayuda</a>
-      <span class="usuario">👤 ${sesion.nombre}</span>
-      <a href="#" id="btnSalir">Cerrar sesión</a>`;
+      <span class="derecha-nav">
+        <span class="usuario">${sesion.nombre}</span>
+        <a href="#" class="btn-nav" id="btnSalir">Cerrar sesión</a>
+      </span>`;
   } else if (sesion && sesion.tipo === 'interno') {
     enlaces = `
       <a href="admin.html" class="${activa === 'admin' ? 'activo' : ''}">Panel de ventas</a>
       <a href="manual-jefe-ventas.html" class="${activa === 'manual' ? 'activo' : ''}">Manual de uso</a>
-      <span class="usuario">👤 ${sesion.nombre} (${sesion.rol})</span>
-      <a href="#" id="btnSalir">Cerrar sesión</a>`;
+      <span class="derecha-nav">
+        <span class="usuario">${sesion.nombre} (${sesion.rol})</span>
+        <a href="#" class="btn-nav" id="btnSalir">Cerrar sesión</a>
+      </span>`;
   } else {
-    enlaces = `<a href="index.html" class="${activa === 'inicio' ? 'activo' : ''}">Ingresar</a>
-               <a href="ayuda.html" class="${activa === 'ayuda' ? 'activo' : ''}">Ayuda</a>`;
+    enlaces = `
+      <a href="index.html" class="${activa === 'inicio' ? 'activo' : ''}">Inicio</a>
+      <a href="catalogo.html" class="${activa === 'catalogo' ? 'activo' : ''}">Paquetes</a>
+      <a href="index.html#contacto">Contacto</a>
+      <span class="derecha-nav">
+        <a href="ingreso.html" class="btn-nav">Ingresar</a>
+        <a href="ingreso.html#registro" class="btn-nav lleno">Registrarse</a>
+      </span>`;
   }
 
+  const destinoLogo = sesion && sesion.tipo === 'interno' ? 'admin.html' : 'index.html';
+
   barra.innerHTML = `
-    <a class="logo" href="${sesion && sesion.tipo === 'interno' ? 'admin.html' : 'catalogo.html'}">
-      <svg viewBox="0 0 24 24" fill="#7fbdec" xmlns="http://www.w3.org/2000/svg">
+    <a class="logo" href="${destinoLogo}">
+      <svg viewBox="0 0 24 24" fill="#6fb1e6" xmlns="http://www.w3.org/2000/svg">
         <path d="M2.4 19.6 21 12 2.4 4.4v5.9L15.2 12 2.4 13.7z"/></svg>
       <span class="marca">AIR<b>SKY</b></span></a>
     ${enlaces}`;
@@ -154,7 +165,7 @@ function dibujarBarra(activa) {
   if (btnSalir) {
     btnSalir.addEventListener('click', async (e) => {
       e.preventDefault();
-      try { await api('POST', '/api/auth/logout'); } catch { /* la sesión local se limpia igual */ }
+      try { await api('POST', '/api/auth/logout'); } catch {}
       Sesion.limpiar();
       Carrito.vaciar();
       location.href = 'index.html';
@@ -162,21 +173,16 @@ function dibujarBarra(activa) {
   }
 }
 
-/** Actualiza el numerito del carrito en la barra. */
 function actualizarContadorCarrito() {
   const contador = document.getElementById('contadorCarrito');
   if (contador) contador.textContent = Carrito.cantidadTotal();
 }
 
-/**
- * Exige que haya una sesión del tipo indicado; si no, redirige al inicio.
- * @param {'cliente'|'interno'} tipo - Tipo de usuario requerido.
- * @returns {object|null} La sesión válida o null (ya redirigido).
- */
+// echa al inicio si no hay sesion del tipo pedido
 function exigirSesion(tipo) {
   const sesion = Sesion.obtener();
   if (!sesion || sesion.tipo !== tipo) {
-    location.href = 'index.html';
+    location.href = 'ingreso.html';
     return null;
   }
   return sesion;

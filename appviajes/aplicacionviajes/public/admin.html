@@ -25,9 +25,8 @@
 
       <div class="mensaje" id="mensaje"></div>
 
-      <!-- CU-08: Administrar Productos -->
       <section class="panel-pestana visible" id="panelProductos">
-        <div class="acciones" style="justify-content: space-between;">
+        <div class="acciones separadas">
           <h2>Catálogo de productos</h2>
           <button class="boton exito" id="btnNuevoProducto">+ Cargar producto</button>
         </div>
@@ -42,11 +41,10 @@
         </div>
       </section>
 
-      <!-- CU-09 / CU-10: Pedidos pendientes, entrega y anulación -->
       <section class="panel-pestana" id="panelPedidos">
-        <div class="acciones" style="align-items: center;">
-          <h2 style="margin:0;">Pedidos</h2>
-          <select id="filtroEstadoPedidos" style="max-width:220px;">
+        <div class="acciones">
+          <h2>Pedidos</h2>
+          <select id="filtroEstadoPedidos" class="filtro">
             <option value="Pendiente" selected>Pendientes de entrega</option>
             <option value="Entregado">Entregados</option>
             <option value="Anulado">Anulados</option>
@@ -56,7 +54,6 @@
         <div id="listaPedidosAdmin" class="mt">Cargando...</div>
       </section>
 
-      <!-- CU-11: Estado de cuenta -->
       <section class="panel-pestana" id="panelCuenta">
         <h2>Estado de cuenta</h2>
         <div class="pestanas">
@@ -79,7 +76,6 @@
         </div>
       </section>
 
-      <!-- Historial de pedidos entregados/anulados -->
       <section class="panel-pestana" id="panelHistorial">
         <h2>Historial de pedidos cerrados</h2>
         <div class="tabla-envoltura mt">
@@ -93,7 +89,6 @@
         </div>
       </section>
 
-      <!-- Tabla EMAIL de la aplicación -->
       <section class="panel-pestana" id="panelEmails">
         <h2>Correos registrados por el sistema</h2>
         <div class="tabla-envoltura mt">
@@ -106,7 +101,6 @@
         </div>
       </section>
 
-      <!-- Configuración: emails de sector por categoría -->
       <section class="panel-pestana" id="panelConfig">
         <h2>Correos de los sectores de la empresa</h2>
         <div class="tabla-envoltura mt">
@@ -119,7 +113,6 @@
     </div>
   </main>
 
-  <!-- Modal alta/edición de producto -->
   <div class="fondo-modal" id="modalProducto">
     <div class="modal">
       <h2 id="tituloModalProducto">Cargar producto</h2>
@@ -169,19 +162,18 @@
     </div>
   </div>
 
-  <!-- Modal para ver un correo completo -->
   <div class="fondo-modal" id="modalEmail">
     <div class="modal">
       <h2 id="asuntoEmail"></h2>
       <p class="texto-chico" id="datosEmail"></p>
-      <pre id="mensajeEmail" style="white-space:pre-wrap; background:var(--gris-fondo); padding:14px; border-radius:8px; margin-top:12px; font-family:inherit;"></pre>
+      <pre id="mensajeEmail" class="texto-correo"></pre>
       <div class="acciones">
         <button class="boton secundario" id="btnCerrarEmail">Cerrar</button>
       </div>
     </div>
   </div>
 
-  <footer class="pie">AIRSKY · Proyecto ONETP Programación</footer>
+  <footer class="pie">AIRSKY · Agencia de viajes</footer>
 
   <script src="js/comun.js"></script>
   <script src="js/admin.js"></script>

@@ -1,28 +1,22 @@
-/**
- * admin.js
- * Panel del Jefe de Ventas / Personal de Ventas:
- *  CU-08: Administrar Productos (alta, modificación, baja).
- *  CU-09: Consultar Pedidos Pendientes (y por estado).
- *  CU-10: Registrar Entrega de pedidos.
- *  1.4.6: Anular pedidos.
- *  CU-11: Consultar Estado de Cuenta (por fecha y por cliente).
- *  Además: historial de pedidos cerrados, tabla EMAIL y
- *  configuración de los correos de sector por categoría.
- */
-
 'use strict';
 
 exigirSesion('interno');
 dibujarBarra('admin');
 
-/** Datos en memoria del panel. */
 let productosAdmin = [];
 let categorias = [];
 let emails = [];
-/** Producto en edición (null = alta). */
 let productoEnEdicion = null;
 
-// ────────────────────────── Pestañas principales ──────────────────────────
+// que cargar cuando abren cada pestaña
+const cargaDePestana = {
+  panelProductos: cargarProductos,
+  panelPedidos: cargarPedidos,
+  panelCuenta: cargarEstadoCuenta,
+  panelHistorial: cargarHistorial,
+  panelEmails: cargarEmails,
+  panelConfig: cargarCategorias
+};
 
 document.querySelectorAll('.pestana[data-panel]').forEach((boton) => {
   boton.addEventListener('click', () => {
@@ -30,17 +24,11 @@ document.querySelectorAll('.pestana[data-panel]').forEach((boton) => {
     document.querySelectorAll('.panel-pestana').forEach((p) => p.classList.remove('visible'));
     boton.classList.add('activa');
     document.getElementById(boton.dataset.panel).classList.add('visible');
-    // Refrescar los datos de la pestaña elegida.
-    if (boton.dataset.panel === 'panelProductos') cargarProductos();
-    if (boton.dataset.panel === 'panelPedidos') cargarPedidos();
-    if (boton.dataset.panel === 'panelCuenta') cargarEstadoCuenta();
-    if (boton.dataset.panel === 'panelHistorial') cargarHistorial();
-    if (boton.dataset.panel === 'panelEmails') cargarEmails();
-    if (boton.dataset.panel === 'panelConfig') cargarCategorias();
+    cargaDePestana[boton.dataset.panel]();
   });
 });
 
-// Sub-pestañas del estado de cuenta.
+// pestañitas de adentro del estado de cuenta
 document.querySelectorAll('.pestana[data-vista]').forEach((boton) => {
   boton.addEventListener('click', () => {
     document.querySelectorAll('.pestana[data-vista]').forEach((b) => b.classList.remove('activa'));
@@ -50,9 +38,6 @@ document.querySelectorAll('.pestana[data-vista]').forEach((boton) => {
   });
 });
 
-// ────────────────────────── CU-08: Productos ──────────────────────────
-
-/** Carga el catálogo completo (incluye inactivos). */
 async function cargarProductos() {
   try {
     productosAdmin = await api('GET', '/api/admin/productos');
@@ -63,17 +48,19 @@ async function cargarProductos() {
     }
     cuerpo.innerHTML = productosAdmin.map((p) => `
       <tr>
-        <td><strong>${p.codigo_producto}</strong></td>
+        <td class="cod">${p.codigo_producto}</td>
         <td>${p.descripcion}</td>
         <td>${p.tipo_producto}</td>
         <td class="derecha">${moneda(p.precio)}</td>
         <td class="derecha">${p.stock}</td>
         <td><span class="chip ${p.estado.toLowerCase()}">${p.estado}</span></td>
         <td>
-          <button class="boton chico" data-editar="${p.id_producto}">Modificar</button>
-          ${p.estado === 'Activo'
-            ? `<button class="boton chico peligro" data-baja="${p.id_producto}">Dar de baja</button>`
-            : `<button class="boton chico exito" data-alta="${p.id_producto}">Reactivar</button>`}
+          <div class="acciones-fila">
+            <button class="boton linea" data-editar="${p.id_producto}">Modificar</button>
+            ${p.estado === 'Activo'
+              ? `<button class="boton linea rojo" data-baja="${p.id_producto}">Dar de baja</button>`
+              : `<button class="boton linea verde" data-alta="${p.id_producto}">Reactivar</button>`}
+          </div>
         </td>
       </tr>`).join('');
 
@@ -88,10 +75,7 @@ async function cargarProductos() {
   }
 }
 
-/**
- * Abre el modal de producto para alta (sin id) o edición.
- * @param {number} [idProducto] - Producto a editar.
- */
+// sin id carga uno nuevo, con id modifica el que le paso
 async function abrirModalProducto(idProducto) {
   if (categorias.length === 0) {
     categorias = await api('GET', '/api/categorias');
@@ -144,7 +128,6 @@ document.getElementById('formProducto').addEventListener('submit', async (e) => 
   }
 });
 
-/** Baja lógica de un producto (pasa a Inactivo). */
 async function bajaProducto(idProducto) {
   const producto = productosAdmin.find((p) => p.id_producto === idProducto);
   if (!confirm(`¿Dar de baja el producto ${producto.codigo_producto}? Dejará de verse en el catálogo.`)) return;
@@ -157,7 +140,6 @@ async function bajaProducto(idProducto) {
   }
 }
 
-/** Reactiva un producto dado de baja. */
 async function reactivarProducto(idProducto) {
   try {
     const respuesta = await api('PUT', `/api/admin/productos/${idProducto}`, { estado: 'Activo' });
@@ -168,9 +150,6 @@ async function reactivarProducto(idProducto) {
   }
 }
 
-// ────────────────── CU-09 / CU-10: Pedidos, entrega y anulación ──────────────────
-
-/** Carga los pedidos según el filtro de estado. */
 async function cargarPedidos() {
   const contenedor = document.getElementById('listaPedidosAdmin');
   const estado = document.getElementById('filtroEstadoPedidos').value;
@@ -181,7 +160,7 @@ async function cargarPedidos() {
       return;
     }
     contenedor.innerHTML = pedidos.map((p) => `
-      <div class="tarjeta" style="box-shadow:none; border:1px solid var(--gris-borde);">
+      <div class="tarjeta plana">
         <h2>Pedido N° ${p.id_pedido}
           <span class="chip ${p.estado.toLowerCase()}">${p.estado}</span></h2>
         <p class="texto-chico">Fecha: ${p.fecha_pedido} · Cliente: <strong>${p.cliente}</strong>
@@ -192,19 +171,19 @@ async function cargarPedidos() {
                        <th class="derecha">Cant.</th><th class="derecha">Subtotal</th></tr></thead>
             <tbody>
               ${p.detalles.map((d) => `
-                <tr><td>${d.codigo_producto}</td><td>${d.descripcion}</td>
+                <tr><td class="cod">${d.codigo_producto}</td><td>${d.descripcion}</td>
                     <td class="derecha">${moneda(d.precio_unitario)}</td>
                     <td class="derecha">${d.cantidad}</td>
                     <td class="derecha">${moneda(d.subtotal)}</td></tr>`).join('')}
             </tbody>
           </table>
         </div>
-        <div class="acciones" style="justify-content: space-between; align-items:center;">
+        <div class="acciones separadas">
           <span class="total-grande">Total: ${moneda(p.total)}</span>
           ${p.estado === 'Pendiente' ? `
             <span>
               <button class="boton chico exito" data-entregar="${p.id_pedido}">Registrar entrega</button>
-              <button class="boton chico peligro" data-anular="${p.id_pedido}">Anular pedido</button>
+              <button class="boton linea rojo" data-anular="${p.id_pedido}">Anular pedido</button>
             </span>` : ''}
         </div>
       </div>`).join('');
@@ -220,7 +199,6 @@ async function cargarPedidos() {
 
 document.getElementById('filtroEstadoPedidos').addEventListener('change', cargarPedidos);
 
-/** CU-10: Registrar la entrega de un pedido pendiente. */
 async function entregarPedido(idPedido) {
   if (!confirm(`¿Registrar la entrega del pedido N° ${idPedido}? Pasará al historial.`)) return;
   try {
@@ -232,7 +210,6 @@ async function entregarPedido(idPedido) {
   }
 }
 
-/** 1.4.6: Anular un pedido pendiente. */
 async function anularPedido(idPedido) {
   if (!confirm(`¿ANULAR el pedido N° ${idPedido}? Se repondrá el stock y se avisará al cliente.`)) return;
   try {
@@ -244,9 +221,6 @@ async function anularPedido(idPedido) {
   }
 }
 
-// ────────────────────────── CU-11: Estado de cuenta ──────────────────────────
-
-/** Carga las dos vistas del estado de cuenta (por fecha y por cliente). */
 async function cargarEstadoCuenta() {
   try {
     const cuenta = await api('GET', '/api/admin/estado-cuenta');
@@ -270,7 +244,7 @@ async function cargarEstadoCuenta() {
     contenedorCliente.innerHTML = cuenta.porCliente.length === 0
       ? '<p class="centrado">Sin ventas registradas.</p>'
       : cuenta.porCliente.map((g) => `
-          <div class="tarjeta" style="box-shadow:none; border:1px solid var(--gris-borde);">
+          <div class="tarjeta plana">
             <h2>${g.cliente}</h2>
             <p class="texto-chico">${g.cantidad_facturas} factura(s) ·
                Total facturado: <strong>${moneda(g.total_facturado)}</strong></p>
@@ -293,9 +267,6 @@ async function cargarEstadoCuenta() {
   }
 }
 
-// ────────────────────────── Historial ──────────────────────────
-
-/** Carga la tabla histórica de pedidos entregados/anulados. */
 async function cargarHistorial() {
   try {
     const historial = await api('GET', '/api/admin/historial');
@@ -317,9 +288,6 @@ async function cargarHistorial() {
   }
 }
 
-// ────────────────────────── Tabla EMAIL ──────────────────────────
-
-/** Carga los correos registrados por la aplicación. */
 async function cargarEmails() {
   try {
     emails = await api('GET', '/api/admin/emails');
@@ -333,7 +301,7 @@ async function cargarEmails() {
             <td>${m.destinatario}</td>
             <td>${m.tipo}</td>
             <td>${m.asunto}</td>
-            <td><button class="boton chico secundario" data-ver="${m.id_email}">Ver</button></td>
+            <td><button class="boton linea" data-ver="${m.id_email}">Ver</button></td>
           </tr>`).join('');
 
     cuerpo.querySelectorAll('button[data-ver]').forEach((b) =>
@@ -353,9 +321,6 @@ async function cargarEmails() {
 document.getElementById('btnCerrarEmail').addEventListener('click', () =>
   document.getElementById('modalEmail').classList.remove('visible'));
 
-// ────────────────────────── Configuración de sectores ──────────────────────────
-
-/** Carga las categorías con el email de su sector. */
 async function cargarCategorias() {
   try {
     const lista = await api('GET', '/api/admin/categorias');
@@ -365,7 +330,7 @@ async function cargarCategorias() {
         <td>${c.nombre_categoria}</td>
         <td>${c.tipo_categoria}</td>
         <td><input type="email" value="${c.email_sector}" id="sector-${c.id_categoria}"></td>
-        <td><button class="boton chico" data-guardar="${c.id_categoria}">Guardar</button></td>
+        <td><button class="boton linea" data-guardar="${c.id_categoria}">Guardar</button></td>
       </tr>`).join('');
 
     cuerpo.querySelectorAll('button[data-guardar]').forEach((b) =>
@@ -384,5 +349,5 @@ async function cargarCategorias() {
   }
 }
 
-// Carga inicial.
+// al entrar arranca en la pestaña de productos
 cargarProductos();

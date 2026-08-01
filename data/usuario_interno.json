@@ -5,7 +5,7 @@
     "apellido": "Domínguez",
     "email": "jefe.ventas@airsky.com.ar",
     "usuario": "jefeventas",
-    "contrasena": "393c824edc0d736e19bf898746afd4de:4223cc25cf8116e187ec29f5261be71b1a284dc8e53cdbe4c89079202a2fe7b75463357a56dc7f2978ff3714a7a06184c87111548604ca95356dadbd91331c9b",
+    "contrasena": "d48cfccf6c900998ff9204d787337f3e:213a1c302f82c50852f5e1f486f568c923e27fcacdaa2bbdd02145926f81d71d4d854fbd1fbd00a2715f5fd7639c839774ba03161ffd3e0ee533994235b20515",
     "rol": "Jefe de Ventas",
     "estado": "Activo"
   },
@@ -15,7 +15,7 @@
     "apellido": "Ríos",
     "email": "carlos.rios@airsky.com.ar",
     "usuario": "cventas",
-    "contrasena": "2531b2ba49c250eb93de471d32ac40e4:0475342574d260fa7eddf2840ffb10527903c2a053a0f2adbacbc82cb802cb8bdb70c18108344b373d535fcc934d8f1243e587d16abfa6d3989805d4ff86e6e8",
+    "contrasena": "da1c00343196dc13089171da7e819a43:79abc1cc28a05ad5dc90ef619156f81c34762a4180b84f6368d8e899922e907c3bc71d79d227d5882d08b7242189236e9dc5ac8fb987a10e0189ff33a77fc9ff",
     "rol": "Personal de Ventas",
     "estado": "Activo"
   }

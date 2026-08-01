@@ -1,21 +1,12 @@
-/**
- * mispedidos.js
- * CU-07  : Consultar Pedidos del cliente.
- * CU-07.1: Modificar Pedido pendiente.
- * CU-07.2: Cancelar Pedido pendiente.
- */
-
 'use strict';
 
 exigirSesion('cliente');
 dibujarBarra('mispedidos');
 
-/** Pedidos del cliente. */
 let pedidos = [];
-/** Renglones en edición dentro del modal. */
+
 let edicion = { id_pedido: null, items: [] };
 
-/** Carga y dibuja los pedidos del cliente. */
 async function cargarPedidos() {
   const lista = document.getElementById('listaPedidos');
   try {
@@ -25,7 +16,7 @@ async function cargarPedidos() {
       return;
     }
     lista.innerHTML = pedidos.map((p) => `
-      <div class="tarjeta" style="box-shadow:none; border:1px solid var(--gris-borde);">
+      <div class="tarjeta plana">
         <h2>Pedido N° ${p.id_pedido}
           <span class="chip ${p.estado.toLowerCase()}">${p.estado}</span></h2>
         <p class="texto-chico">Fecha: ${p.fecha_pedido}</p>
@@ -36,7 +27,7 @@ async function cargarPedidos() {
             <tbody>
               ${p.detalles.map((d) => `
                 <tr>
-                  <td>${d.codigo_producto}</td>
+                  <td class="cod">${d.codigo_producto}</td>
                   <td>${d.descripcion}</td>
                   <td class="derecha">${moneda(d.precio_unitario)}</td>
                   <td class="derecha">${d.cantidad}</td>
@@ -45,12 +36,12 @@ async function cargarPedidos() {
             </tbody>
           </table>
         </div>
-        <div class="acciones" style="justify-content: space-between; align-items:center;">
+        <div class="acciones separadas">
           <span class="total-grande">Total: ${moneda(p.total)}</span>
           ${p.estado === 'Pendiente' ? `
             <span>
-              <button class="boton chico" data-editar="${p.id_pedido}">Modificar</button>
-              <button class="boton chico peligro" data-cancelar="${p.id_pedido}">Cancelar pedido</button>
+              <button class="boton linea" data-editar="${p.id_pedido}">Modificar</button>
+              <button class="boton linea rojo" data-cancelar="${p.id_pedido}">Cancelar pedido</button>
             </span>` : ''}
         </div>
       </div>`).join('');
@@ -64,10 +55,6 @@ async function cargarPedidos() {
   }
 }
 
-/**
- * CU-07.1: abre el modal de edición con los renglones del pedido.
- * @param {number} idPedido - Pedido a modificar.
- */
 function abrirEdicion(idPedido) {
   const pedido = pedidos.find((p) => p.id_pedido === idPedido);
   if (!pedido) return;
@@ -85,7 +72,6 @@ function abrirEdicion(idPedido) {
   document.getElementById('modalEditar').classList.add('visible');
 }
 
-/** Dibuja los renglones dentro del modal de edición. */
 function dibujarEdicion() {
   const cuerpo = document.getElementById('cuerpoEditar');
   if (edicion.items.length === 0) {
@@ -96,8 +82,8 @@ function dibujarEdicion() {
     <tr>
       <td>${i.codigo}</td>
       <td>${i.descripcion}</td>
-      <td><input type="number" min="1" value="${i.cantidad}" style="width:80px" data-indice="${indice}"></td>
-      <td><button class="boton chico peligro" data-quitar="${indice}">Quitar</button></td>
+      <td><input type="number" class="cantidad" min="1" value="${i.cantidad}" data-indice="${indice}"></td>
+      <td><button class="boton linea rojo" data-quitar="${indice}">Quitar</button></td>
     </tr>`).join('');
 
   cuerpo.querySelectorAll('input[data-indice]').forEach((campo) => {
@@ -138,10 +124,6 @@ document.getElementById('btnCerrarEdicion').addEventListener('click', () => {
   document.getElementById('modalEditar').classList.remove('visible');
 });
 
-/**
- * CU-07.2: cancela (anula) un pedido pendiente.
- * @param {number} idPedido - Pedido a cancelar.
- */
 async function cancelarPedido(idPedido) {
   if (!confirm(`¿Confirmás la cancelación del pedido N° ${idPedido}?`)) return;
   try {

@@ -8,34 +8,21 @@
     "email": "juan.perez@gmail.com",
     "direccion": "Av. Rivadavia 1250, CABA",
     "usuario": "juanperez",
-    "contrasena": "455747146ac2411b7c83c9b6b4c653a8:e21074356bb5549f9f78184df73e40977150c75730591db5dc5358e93b5b631ac7f49f645aa6a59bb45d25fe96f1e3a564d827952c9e754cadc0b6229d8f128e",
-    "fecha_registro": "2026-07-17 00:06:46",
+    "contrasena": "3e5c0f94dcb5d79f2968f4ba51c5e894:e69cb3efbe6a9bba938c576d6c1ba97a40e94e87aaf69bd92af2023f3178352b3d03014ba142fac5c0d6478c5b5eab2177bca6caf062fdfc4d2ae6b193d63af4",
+    "fecha_registro": "2026-07-29 22:33:38",
     "estado": "Activo"
   },
   {
     "nombre": "ignacio",
-    "apellido": "marcote",
+    "apellido": "pepito",
     "dni": "48042148",
     "telefono": "5491159147292",
     "email": "ignacio.marcotee@gmail.com",
     "direccion": "gualeguay123",
     "usuario": "nacho211",
-    "contrasena": "9a5c8494392acbe8dc8484666dd7cd5e:3cb795f74bbd10d261bbe871fab2eeb6684c049baa559a9ce03433de365c435006e44cb4d11d6e084a00a4ecb2ec90d69713a5c9b3e3af7a7e6891663d44b515",
-    "fecha_registro": "2026-07-17 00:09:20",
+    "contrasena": "8ceca9d406f7046821dbbc291f47e063:32a4131ab8cf5c96c162cfa78188e17bbce70fba274174a8ff7059938e70d6527db74666f887f9f8622aa58a4d8015e123c727e4c06a16e595d1c9ddd86492c8",
+    "fecha_registro": "2026-07-29 22:39:18",
     "estado": "Activo",
     "id_cliente": 2
-  },
-  {
-    "nombre": "ignacio",
-    "apellido": "villalba",
-    "dni": "9857987987",
-    "telefono": "549115454545",
-    "email": "nacho.marcote2111@gmail.com",
-    "direccion": "marruecos",
-    "usuario": "idone",
-    "contrasena": "59a2872425a9c660a9b5cefe49ded501:3e7de8ad3de21f6b68ba2d755e9d7814f6bc800e6a3c602e620500f6f749defe0fc91f5b10ca68ca7479b5b55f8147cb3889cea99ddec9cf2b2b4ac745186bf8",
-    "fecha_registro": "2026-07-17 01:35:36",
-    "estado": "Activo",
-    "id_cliente": 3
   }
 ]

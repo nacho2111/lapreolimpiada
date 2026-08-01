@@ -1,26 +1,8 @@
-/**
- * seed.js
- * Datos iniciales (semilla) de la aplicación.
- * Se cargan automáticamente la primera vez que se inicia el servidor
- * (cuando la carpeta data/ todavía no tiene los archivos JSON).
- *
- * Incluye:
- *  - Categorías de productos turísticos (con el email del sector correspondiente).
- *  - Catálogo inicial de productos.
- *  - Usuario interno "Jefe de Ventas" (credenciales del entregable N°7).
- *  - Un cliente de demostración.
- *  - Configuración general del sistema.
- */
-
 'use strict';
 
 const { hashContrasena } = require('./auth');
 const { fechaHoraActual } = require('./util');
 
-/**
- * Construye el conjunto completo de datos iniciales.
- * @returns {object} Objeto con una propiedad por tabla.
- */
 function generarDatosIniciales() {
   const ahora = fechaHoraActual();
 
@@ -37,6 +19,9 @@ function generarDatosIniciales() {
       { id_producto: 1, codigo_producto: 'PAQ-001', descripcion: 'Paquete Bariloche 7 noches - hotel 4 estrellas, aéreo y traslados incluidos', tipo_producto: 'Paquete', precio: 850000, stock: 20, estado: 'Activo', id_categoria: 1 },
       { id_producto: 2, codigo_producto: 'PAQ-002', descripcion: 'Paquete Cataratas del Iguazú 5 noches - media pensión y excursiones', tipo_producto: 'Paquete', precio: 620000, stock: 15, estado: 'Activo', id_categoria: 1 },
       { id_producto: 3, codigo_producto: 'PAQ-003', descripcion: 'Paquete Río de Janeiro 7 noches - all inclusive con aéreo', tipo_producto: 'Paquete', precio: 1450000, stock: 10, estado: 'Activo', id_categoria: 1 },
+      { id_producto: 12, codigo_producto: 'PAQ-004', descripcion: 'Paquete Miami 14 noches - hotel frente al mar con aéreo', tipo_producto: 'Paquete', precio: 1900000, stock: 12, estado: 'Activo', id_categoria: 1 },
+      { id_producto: 13, codigo_producto: 'PAQ-005', descripcion: 'Paquete Madrid 8 noches - hotel céntrico con aéreo', tipo_producto: 'Paquete', precio: 1750000, stock: 12, estado: 'Activo', id_categoria: 1 },
+      { id_producto: 14, codigo_producto: 'PAQ-006', descripcion: 'Paquete Mendoza 5 noches - hotel, aéreo y tour de bodegas', tipo_producto: 'Paquete', precio: 700000, stock: 18, estado: 'Activo', id_categoria: 1 },
       { id_producto: 4, codigo_producto: 'EST-001', descripcion: 'Estadía Hotel 4 estrellas en Mendoza - 3 noches con desayuno', tipo_producto: 'Estadía', precio: 380000, stock: 25, estado: 'Activo', id_categoria: 2 },
       { id_producto: 5, codigo_producto: 'EST-002', descripcion: 'Estadía en cabaña Villa La Angostura - 5 noches para 4 personas', tipo_producto: 'Estadía', precio: 540000, stock: 8, estado: 'Activo', id_categoria: 2 },
       { id_producto: 6, codigo_producto: 'PAS-001', descripcion: 'Pasaje aéreo Buenos Aires - Bariloche ida y vuelta', tipo_producto: 'Pasaje', precio: 210000, stock: 50, estado: 'Activo', id_categoria: 3 },

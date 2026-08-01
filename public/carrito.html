@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Carrito compras | AIRSKY</title>
+  <title>Carrito de compras | AIRSKY</title>
   <link rel="stylesheet" href="css/estilos.css">
 </head>
 <body>
@@ -32,25 +32,20 @@
         </table>
       </div>
 
-      <div class="acciones" style="justify-content: space-between; align-items: center;">
+      <div class="acciones separadas">
         <span class="total-grande" id="totalCarrito">Total: $ 0,00</span>
         <span>
           <a class="boton secundario" href="catalogo.html">Seguir comprando</a>
-          <button class="boton naranja" id="btnConfirmar">Confirmar compra y pagar</button>
+          <button class="boton" id="btnConfirmar">Confirmar compra y pagar</button>
         </span>
       </div>
     </div>
   </main>
 
-  <!-- Pasarela de pago de terceros (SIMULADA - equivale a Mercado Pago) -->
+  <!-- ventana del pago -->
   <div class="fondo-modal" id="modalPago">
     <div class="modal">
-      <h2>💳 AIRSKY Pay · Pasarela de pago segura</h2>
-      <div class="tarjeta-visual">
-        <div class="chip-tarjeta"></div>
-        <div class="numero">•••• •••• •••• 3216</div>
-        <div class="marca-tarjeta">AIRSKY</div>
-      </div>
+      <h2>Confirmar el pago</h2>
       <div class="formulario mt">
         <div>
           <label for="medioPago">Medio de pago</label>
@@ -69,7 +64,7 @@
     </div>
   </div>
 
-  <footer class="pie">AIRSKY · Proyecto ONETP Programación</footer>
+  <footer class="pie">AIRSKY · Agencia de viajes</footer>
 
   <script src="js/comun.js"></script>
   <script src="js/carrito.js"></script>

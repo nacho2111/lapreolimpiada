@@ -1,27 +1,9 @@
-/**
- * servicio-pedidos.js
- * Lógica de negocio de los pedidos (capa Servidor de la aplicación):
- *  - Armado del pedido con su número, detalle, pago y venta.
- *  - Envío (simulado y registrado en la tabla EMAIL) de correos al cliente
- *    y al sector de la empresa que corresponda según la categoría.
- *  - Entrega y anulación de pedidos con pase a la tabla HISTORIAL_PEDIDOS.
- *
- * El "cobro" se realiza mediante una pasarela de pago de terceros SIMULADA
- * (en producción se integraría, por ejemplo, la API de Mercado Pago).
- */
-
 'use strict';
 
 const { fechaHoraActual, redondear } = require('./util');
 const correo = require('./correo');
 
-/**
- * Registra un correo en la tabla EMAIL y, si el envío real está configurado
- * (config.correo.json), lo manda de verdad por SMTP. El envío real nunca
- * interrumpe la compra: si falla, el correo queda igual registrado en la tabla.
- * @param {object} store - Capa de datos.
- * @param {object} datos - Fila de la tabla email { destinatario, asunto, mensaje, ... }.
- */
+// guarda el mail en la tabla EMAIL y despues lo intenta mandar
 async function registrarEmail(store, datos) {
   await store.insert('email', datos);
   await correo.enviar({
@@ -31,13 +13,7 @@ async function registrarEmail(store, datos) {
   });
 }
 
-/**
- * Valida los renglones de un carrito y calcula los importes.
- * @param {object} store - Capa de datos.
- * @param {Array<{id_producto:number, cantidad:number}>} items - Renglones del carrito.
- * @returns {Promise<{detalles:Array, total:number}>} Detalles valorizados y total.
- * @throws {Error} Si un producto no existe, está inactivo o no hay stock.
- */
+// controla stock y precios, y calcula el total del carrito
 async function valorizarCarrito(store, items) {
   if (!Array.isArray(items) || items.length === 0) {
     throw new Error('El carrito está vacío.');
@@ -64,21 +40,13 @@ async function valorizarCarrito(store, items) {
   return { detalles, total };
 }
 
-/**
- * Registra en la tabla EMAIL los correos de un pedido confirmado:
- * uno para el cliente y uno para cada sector involucrado.
- * @param {object} store - Capa de datos.
- * @param {object} pedido - Pedido recién creado.
- * @param {object} cliente - Cliente que realizó la compra.
- * @param {Array} detalles - Detalles valorizados del pedido.
- */
 async function enviarEmailsDeConfirmacion(store, pedido, cliente, detalles) {
   const fecha = fechaHoraActual();
   const listado = detalles
     .map((d) => ` - ${d.producto.codigo_producto} | ${d.producto.descripcion} | Cant: ${d.cantidad} | Subtotal: $${d.subtotal}`)
     .join('\n');
 
-  // Correo de confirmación para el cliente.
+  // primero el mail al cliente
   await registrarEmail(store, {
     destinatario: cliente.email,
     asunto: `Confirmación de compra - Pedido N° ${pedido.id_pedido}`,
@@ -93,12 +61,11 @@ async function enviarEmailsDeConfirmacion(store, pedido, cliente, detalles) {
     id_pedido: pedido.id_pedido
   });
 
-  // Correo para cada sector de la empresa involucrado en el pedido
-  // (la dirección del sector está guardada en la tabla CATEGORIA).
+  // despues uno por cada sector que tenga productos en el pedido
   const sectores = new Map();
   for (const d of detalles) {
     const categoria = await store.get('categoria', d.producto.id_categoria);
-    const direccion = categoria ? categoria.email_sector : 'ventas@agenciadeviajes.com.ar';
+    const direccion = categoria ? categoria.email_sector : 'ventas@airsky.com.ar';
     if (!sectores.has(direccion)) sectores.set(direccion, []);
     sectores.get(direccion).push(d);
   }
@@ -121,16 +88,6 @@ async function enviarEmailsDeConfirmacion(store, pedido, cliente, detalles) {
   }
 }
 
-/**
- * Crea un pedido completo a partir del carrito de un cliente:
- * PEDIDO + DETALLE_PEDIDO + PAGO (aprobado por la pasarela simulada)
- * + VENTA + EMAILs. Además descuenta el stock de los productos.
- * @param {object} store - Capa de datos.
- * @param {number} idCliente - Id del cliente autenticado.
- * @param {Array} items - Renglones {id_producto, cantidad}.
- * @param {string} medioPago - 'Tarjeta' | 'Transferencia' | 'Otro'.
- * @returns {Promise<object>} El pedido creado con su detalle.
- */
 async function crearPedido(store, idCliente, items, medioPago) {
   const cliente = await store.get('cliente', idCliente);
   if (!cliente || cliente.estado !== 'Activo') throw new Error('Cliente inexistente o inactivo.');
@@ -141,7 +98,7 @@ async function crearPedido(store, idCliente, items, medioPago) {
   const { detalles, total } = await valorizarCarrito(store, items);
   const fecha = fechaHoraActual();
 
-  // 1) Cabecera del pedido (queda PENDIENTE de entrega).
+  // 1) cabecera del pedido, queda pendiente de entrega
   const pedido = await store.insert('pedido', {
     fecha_pedido: fecha,
     estado: 'Pendiente',
@@ -149,7 +106,7 @@ async function crearPedido(store, idCliente, items, medioPago) {
     id_cliente: cliente.id_cliente
   });
 
-  // 2) Detalle: cada artículo lleva el número de pedido.
+  // 2) un renglon de detalle por producto
   for (const d of detalles) {
     await store.insert('detalle_pedido', {
       cantidad: d.cantidad,
@@ -158,11 +115,11 @@ async function crearPedido(store, idCliente, items, medioPago) {
       id_pedido: pedido.id_pedido,
       id_producto: d.producto.id_producto
     });
-    // Descuento de stock.
+    // le descuento el stock al producto
     await store.update('producto', d.producto.id_producto, { stock: d.producto.stock - d.cantidad });
   }
 
-  // 3) Cobro mediante herramienta de terceros (simulada: siempre aprueba).
+  // 3) el cobro es simulado, siempre sale aprobado
   const pago = await store.insert('pago', {
     fecha_pago: fecha,
     monto: total,
@@ -171,7 +128,7 @@ async function crearPedido(store, idCliente, items, medioPago) {
     id_pedido: pedido.id_pedido
   });
 
-  // 4) Registro de la venta.
+  // 4) la venta, que despues sale en el estado de cuenta
   await store.insert('venta', {
     fecha_venta: fecha,
     total,
@@ -179,22 +136,14 @@ async function crearPedido(store, idCliente, items, medioPago) {
     id_pedido: pedido.id_pedido
   });
 
-  // 5) Correos al cliente y a los sectores correspondientes.
+  // 5) y por ultimo los correos
   await enviarEmailsDeConfirmacion(store, pedido, cliente, detalles);
 
   return { pedido, detalles };
 }
 
-/**
- * Reemplaza el detalle de un pedido PENDIENTE por uno nuevo,
- * reponiendo el stock anterior y recalculando totales, pago y venta.
- * @param {object} store - Capa de datos.
- * @param {object} pedido - Pedido a modificar (debe estar Pendiente).
- * @param {Array} items - Nuevos renglones {id_producto, cantidad}.
- * @returns {Promise<object>} Pedido actualizado.
- */
 async function modificarPedido(store, pedido, items) {
-  // 1) Reponer el stock del detalle anterior y eliminarlo.
+  // 1) borro el detalle viejo y le devuelvo el stock a cada producto
   const detallesViejos = (await store.all('detalle_pedido')).filter((d) => d.id_pedido === pedido.id_pedido);
   for (const d of detallesViejos) {
     const producto = await store.get('producto', d.id_producto);
@@ -202,7 +151,7 @@ async function modificarPedido(store, pedido, items) {
     await store.remove('detalle_pedido', d.id_detalle);
   }
 
-  // 2) Valorizar y grabar el nuevo detalle.
+  // 2) grabo el detalle nuevo
   const { detalles, total } = await valorizarCarrito(store, items);
   for (const d of detalles) {
     await store.insert('detalle_pedido', {
@@ -215,7 +164,7 @@ async function modificarPedido(store, pedido, items) {
     await store.update('producto', d.producto.id_producto, { stock: d.producto.stock - d.cantidad });
   }
 
-  // 3) Actualizar total del pedido y sincronizar pago y venta.
+  // 3) el total cambia, asi que el pago y la venta tienen que quedar igual
   await store.update('pedido', pedido.id_pedido, { total });
   const pago = (await store.all('pago')).find((p) => p.id_pedido === pedido.id_pedido);
   if (pago) await store.update('pago', pago.id_pago, { monto: total });
@@ -225,17 +174,11 @@ async function modificarPedido(store, pedido, items) {
   return { ...pedido, total };
 }
 
-/**
- * Cierra un pedido pendiente como Entregado o Anulado:
- * cambia su estado, lo registra en HISTORIAL_PEDIDOS y envía el
- * correo correspondiente. Si se anula, repone el stock.
- * @param {object} store - Capa de datos.
- * @param {object} pedido - Pedido pendiente.
- * @param {'Entregado'|'Anulado'} estadoFinal - Estado final del pedido.
- */
+// cierra el pedido: entregado o anulado
 async function cerrarPedido(store, pedido, estadoFinal) {
   const fecha = fechaHoraActual();
 
+  // si se anula hay que devolver lo que se habia descontado
   if (estadoFinal === 'Anulado') {
     const detalles = (await store.all('detalle_pedido')).filter((d) => d.id_pedido === pedido.id_pedido);
     for (const d of detalles) {
@@ -244,7 +187,7 @@ async function cerrarPedido(store, pedido, estadoFinal) {
     }
   }
 
-  // El pedido sale de "pendientes" y pasa a la tabla histórica.
+  // deja de estar pendiente y queda anotado en el historial
   await store.update('pedido', pedido.id_pedido, { estado: estadoFinal });
   await store.insert('historial_pedidos', {
     fecha_entrega: fecha,
@@ -252,7 +195,7 @@ async function cerrarPedido(store, pedido, estadoFinal) {
     id_pedido: pedido.id_pedido
   });
 
-  // Aviso por correo al cliente.
+  // aviso al cliente
   const cliente = await store.get('cliente', pedido.id_cliente);
   if (cliente) {
     const texto = estadoFinal === 'Entregado'
@@ -269,12 +212,7 @@ async function cerrarPedido(store, pedido, estadoFinal) {
   }
 }
 
-/**
- * Devuelve un pedido con su detalle "expandido" (datos de productos incluidos).
- * @param {object} store - Capa de datos.
- * @param {object} pedido - Fila de la tabla pedido.
- * @returns {Promise<object>} Pedido con arreglo `detalles`.
- */
+// le agrega a cada renglon el codigo y la descripcion del producto
 async function pedidoConDetalle(store, pedido) {
   const detalles = (await store.all('detalle_pedido')).filter((d) => d.id_pedido === pedido.id_pedido);
   const productos = await store.all('producto');

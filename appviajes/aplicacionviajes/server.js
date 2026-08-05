@@ -18,23 +18,20 @@ async function iniciar() {
   // las paginas, el css y las imagenes
   app.use(express.static(path.join(__dirname, 'public')));
 
-  // por las dudas, si algo explota que no se caiga el servidor
+  
   app.use((error, req, res, next) => {
     console.error('[Error]', error.message);
     res.status(500).json({ error: 'Error interno del servidor.' });
   });
 
-  const puerto = config.puerto || 3000;
+  const puerto = process.env.PORT || config.puerto || 3000;
   app.listen(puerto, () => {
-    console.log('══════════════════════════════════════════════════════════');
-    console.log('  AIRSKY - Portal de paquetes turísticos');
     console.log(`  Servidor iniciado en:  http://localhost:${puerto}`);
     console.log('  Almacenamiento:        Archivos JSON (carpeta data/)');
     console.log('──────────────────────────────────────────────────────────');
     console.log('  Credenciales de prueba:');
     console.log('   · Jefe de Ventas -> usuario: jefeventas | contraseña: Ventas2026!');
-    console.log('   · Cliente demo   -> usuario: juanperez  | contraseña: Cliente2026!');
-    console.log('══════════════════════════════════════════════════════════');
+    
   });
 }
 

@@ -1,0 +1,10 @@
+# las dependencias se bajan con npm install, no van al repo
+node_modules/
+
+# los datos se generan solos la primera vez que arranca el server
+data/
+
+# la clave del correo es personal, nunca al repo
+config.correo.json
+
+*.log

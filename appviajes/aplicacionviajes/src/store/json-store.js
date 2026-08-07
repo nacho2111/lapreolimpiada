@@ -17,7 +17,7 @@ function guardar(tabla) {
   fs.writeFileSync(archivoDe(tabla), JSON.stringify(datos[tabla], null, 2), 'utf8');
 }
 
-// la primera vez crea los archivos con datos de prueba, despues los lee y listo
+//  los archivos con datos de prueba, despues los lee y listo
 async function init() {
   if (!fs.existsSync(CARPETA_DATOS)) fs.mkdirSync(CARPETA_DATOS, { recursive: true });
 
@@ -46,8 +46,8 @@ async function get(tabla, id) {
 async function insert(tabla, fila) {
   const pk = CLAVES_PRIMARIAS[tabla];
   const nueva = { ...fila };
-  // el id lo genero yo, busco el mas alto y le sumo uno
-  if (pk !== 'clave' && nueva[pk] === undefined) {
+  // busco el mas alto y le sumo uno
+  if (nueva[pk] === undefined) {
     const maxId = datos[tabla].reduce((m, f) => Math.max(m, Number(f[pk]) || 0), 0);
     nueva[pk] = maxId + 1;
   }
